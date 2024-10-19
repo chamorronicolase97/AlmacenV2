@@ -16,10 +16,10 @@ namespace Datos
         }
 
         public DbSet<Entidades.Categoria> Categorias { get; set; }
-        //public DbSet<Grupo> Grupos { get; set; }
-        //public DbSet<Permiso> Permisos { get; set; }
-        //public DbSet<Usuario> Usuarios { get; set; }
-        //public DbSet<PedidoEstado> PedidosEstados { get; set; }
+        public DbSet<Entidades.Grupo> Grupos { get; set; }
+        public DbSet<Entidades.Permiso> Permisos { get; set; }
+        public DbSet<Entidades.Usuario> Usuarios { get; set; }
+        public DbSet<Entidades.PedidoEstado> PedidosEstados { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
