@@ -30,7 +30,7 @@ namespace Datos
            base.SaveChanges();
         }
 
-        public List<ClasePersistente> Listargrupos()
+        public List<ClasePersistente> ListarGrupos()
         {
            return base.Grupos.ToList();
         }

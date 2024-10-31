@@ -30,7 +30,7 @@ namespace Datos
            base.SaveChanges();
         }
 
-        public List<ClasePersistente> ListarPedidosEstado()
+        public List<ClasePersistente> Listar()
         {
            return base.PedidosEstados.ToList();
         }

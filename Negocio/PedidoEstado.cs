@@ -22,5 +22,11 @@ namespace Negocio
             Capa Capa = new Capa();
             Capa.Eliminar(clase);
         }
+
+        public static List<ClasePersistente>  Listar()
+        {
+            Capa Capa = new Capa();
+            return Capa.Listar();         
+        }
     }
 }
