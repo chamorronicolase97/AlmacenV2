@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClasePersistente = Entidades.Grupo;
+using ClaseNegocio = Negocio.Grupo;
 
 namespace Escritorio
 {
@@ -45,19 +46,19 @@ namespace Escritorio
             Close();
         }
 
-        private void btnAceptar_Click(object sender, EventArgs e)
+        private async void btnAceptar_Click(object sender, EventArgs e)
         {
             if (!_soloLectura)
             {
                 if (!Validar()) return;
 
-                if(Clase == null)
+                if (Clase == null)
                 {
-                    Clase = new Grupo()
+                    Clase = new ClasePersistente()
                     {
                         Descripcion = txtNombre.Text,
                     };
-                    Clase.Insertar();
+                    await ClaseNegocio.Agregar(Clase);
                 }
                 else
                 {
@@ -65,7 +66,7 @@ namespace Escritorio
 
                     if (Modificacion)
                     {
-                        Clase.Modificar();
+                         ClaseNegocio.Modificar(Clase);
                     }
                 }
             }

@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClasePersistente = Entidades.Grupo;
+using ClaseNegocio = Negocio.Grupo;
+using Datos;
 
 namespace Escritorio
 {
@@ -39,9 +41,11 @@ namespace Escritorio
             CargarGrilla();
         }
 
-        private void CargarGrilla()
+        private async void CargarGrilla()
         {
-            bindingSource.DataSource = Grupo.ListarGrilla();
+            var l = await ClaseNegocio.ListarTodos();
+
+            bindingSource.DataSource = l;
             dgvDatos.DataSource = bindingSource.DataSource;
 
             dgvDatos.Columns["GrupoID"].HeaderText = "ID";
@@ -58,32 +62,33 @@ namespace Escritorio
             if (f.DialogResult == DialogResult.OK) CargarGrilla();
         }
 
-        private void btnBorrar_Click(object sender, EventArgs e)
+        private async void btnBorrar_Click(object sender, EventArgs e)
         {
             if (dgvDatos.CurrentRow == null) return;
 
-            ClasePersistente Clase = new Grupo(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
+            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
 
             DialogResult = MessageBox.Show("Desea eliminar el Grupo " + Clase.Descripcion + "?", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (DialogResult == DialogResult.No) return;
 
-            if (!Clase.EsVacio())
+            if (!ClaseNegocio.EsVacio(Clase.GrupoID))
             {
-                frmMostrarMensaje.MostrarMensaje($"{Categoria.NombreClase}", "El Grupo " + Grupo.NombreClase + " no se encuentra vacio, no puede eliminarse.");
+                frmMostrarMensaje.MostrarMensaje($"{ClasePersistente.NombreClase}", "El Grupo " + ClasePersistente.NombreClase + " no se encuentra vacio, no puede eliminarse.");
                 return;
             }
-            Clase.Eliminar();
+            ClaseNegocio.Eliminar(Clase);
 
-            frmMostrarMensaje.MostrarMensaje($"{Grupo.NombreClase}", "Baja de " + Grupo.NombreClase + " exitosa.");
+            frmMostrarMensaje.MostrarMensaje($"{ClasePersistente.NombreClase}", "Baja de " + ClasePersistente.NombreClase + " exitosa.");
 
             CargarGrilla();
         }
 
-        private void btnModificar_Click(object sender, EventArgs e)
+        private async void btnModificar_Click(object sender, EventArgs e)
         {
             if (dgvDatos.CurrentRow == null) return;
 
-            Grupo Clase = new Grupo(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
+            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
+
 
             frmAMCGrupo f = new frmAMCGrupo();
             f.Clase = Clase;
@@ -92,7 +97,7 @@ namespace Escritorio
             if (f.DialogResult == DialogResult.OK) CargarGrilla();
         }
 
-        private void btnSeleccionar_Click(object sender, EventArgs e)
+        private async void btnSeleccionar_ClickAsync(object sender, EventArgs e)
         {
             if (dgvDatos.CurrentRow == null)
             {
@@ -100,18 +105,18 @@ namespace Escritorio
                 return;
             }
 
-            _objetoSeleccionado = new Grupo(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
+            _objetoSeleccionado = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
 
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        private void btnConsultar_Click(object sender, EventArgs e)
+        private async void btnConsultar_Click(object sender, EventArgs e)
         {
             if (dgvDatos.CurrentRow != null)
             {
                 frmAMCGrupo f = new frmAMCGrupo();
-                Grupo grupo = new Grupo(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
+                ClasePersistente grupo = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
                 f.SoloLectura = true;
                 f.Clase = grupo;
                 f.Show(this);

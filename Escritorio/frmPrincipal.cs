@@ -6,5 +6,11 @@ namespace Escritorio
         {
             InitializeComponent();
         }
+
+        private void gruposToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmABMSGrupos f = new frmABMSGrupos();
+            f.ShowDialog();
+        }
     }
 }

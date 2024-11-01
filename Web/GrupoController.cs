@@ -8,24 +8,24 @@ namespace Web
     [Route("api/[Controller]")]
     public class GrupoController : Controller
     {
-        private readonly AlmacenContext _context;
+        private readonly Datos.Grupo _grupo;
 
         public GrupoController()
 
         {
-            _context = new AlmacenContext();
+            _grupo = new Grupo();
         }
 
         [HttpGet(Name = "ListarGrupos")]
         public ActionResult<IEnumerable<Clase>> GetAll()
         {
-            return _context.Grupos.ToList();
+            return _grupo.ListarGrupos();
         }
 
         [HttpGet("{ID}")]
         public ActionResult<Clase> GetbyID(int ID)
         {
-            var grupo = _context.Grupos.Find(ID);
+            var grupo = _grupo.Consultar(ID);
 
             if (grupo == null) return NotFound();
 
@@ -35,31 +35,28 @@ namespace Web
         [HttpPost]
         public ActionResult<Clase> Create(Clase grupo)
         {
-            _context.Grupos.Add(grupo);
-            _context.SaveChanges();
+            _grupo.Insertar(grupo);
             return CreatedAtAction(nameof(GetbyID), null);
         }
 
-        [HttpPut("ID")]
+        [HttpPut("{ID}")]
         public ActionResult Update(int ID, Clase grupo)
         {
-            if(ID != grupo.GrupoID) return BadRequest();
-            
+            if (ID != grupo.GrupoID) return BadRequest();
 
-            _context.Entry(grupo).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.SaveChanges();            
+            _grupo.Modificar(grupo);
+
             return NoContent();
         }
 
-        [HttpDelete("DNI")]
-        public ActionResult<Clase> Delete(int ID) 
+        [HttpDelete("{ID}")]
+        public ActionResult<Clase> Delete(int ID)
         {
-            var grupo = _context.Grupos.Find(ID);
+            var grupo = _grupo.Consultar(ID);
 
-            if(grupo == null) return NotFound();    
+            if (grupo == null) return NotFound();
 
-            _context.Grupos.Remove(grupo);
-            _context.SaveChanges();
+            _grupo.Eliminar(grupo);
 
             return grupo;
         }

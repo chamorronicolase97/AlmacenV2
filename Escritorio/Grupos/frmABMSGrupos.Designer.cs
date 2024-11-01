@@ -130,7 +130,7 @@
             btnSeleccionar.TabIndex = 14;
             toolTip1.SetToolTip(btnSeleccionar, "Seleccionar");
             btnSeleccionar.UseVisualStyleBackColor = true;
-            btnSeleccionar.Click += btnSeleccionar_Click;
+            btnSeleccionar.Click += btnSeleccionar_ClickAsync;
             // 
             // btnBorrar
             // 

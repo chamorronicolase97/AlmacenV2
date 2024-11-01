@@ -35,9 +35,17 @@ namespace Datos
            return base.Grupos.ToList();
         }
 
-        public bool EsVacio()
+        public bool EsVacio(int ID)
         {
-           return !base.Grupos.ToList().Any();
+            Base cn = new Base();
+            string q = $@"SELECT TOP 1 * FROM dbo.Usuarios WHERE GrupoID = @ID";
+            SqlCommand cmd = new SqlCommand(q);
+            cmd.Parameters.Add("@ID", SqlDbType.Int).Value = ID;
+
+            DataTable dt = cn.Consultar(cmd);
+
+            if (dt.Rows.Count > 0) { return false; }
+            else { return true; }
         }
 
         public ClasePersistente Consultar(int ID)

@@ -12,8 +12,8 @@ namespace Sistema
     public class Base
     {
 
-        string connectionString = ConfigurationManager.ConnectionStrings["NicoConnectionString"].ConnectionString;
-        string connectionString2 = ConfigurationManager.ConnectionStrings["MiltonConnectionString"].ConnectionString;
+        string connectionString = "Data Source=HWNOTE163490\\SQLEXPRESS;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False";
+        string connectionString2 = "Data Source=DESKTOP-KHKJ2OC;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False";
 
         public SqlConnection Conectarbd = new SqlConnection();
 
