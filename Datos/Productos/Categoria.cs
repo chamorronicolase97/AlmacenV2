@@ -1,48 +1,43 @@
 ﻿using Sistema;
-using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClasePersistente = Entidades.Proveedor;
+using System.Data;
+using ClasePersistente = Entidades.Categoria;
 
 namespace Datos
 {
-    public class Proveedor: AlmacenContext
+    public class Categoria : AlmacenContext
     {
-        const string Tabla = "dbo.Proveedores";
+        const string Tabla = "dbo.Categorias";
+        public Categoria() : base() { }
 
-        public Proveedor():base() { }
 
         public void Insertar(ClasePersistente clase)
         {
-            base.Proveedores.Add(clase);
+            Categorias.Add(clase);
             base.SaveChanges();
         }
 
         public void Modificar(ClasePersistente clase)
         {
-            base.Proveedores.Update(clase);
+            Categorias.Update(clase);
             base.SaveChanges();
         }
 
         public void Eliminar(ClasePersistente clase)
         {
-            base.Proveedores.Remove(clase);
+            Categorias.Remove(clase);
             base.SaveChanges();
         }
 
-        public List<ClasePersistente> ListarProveedores()
+        public List<ClasePersistente> ListarCategorias()
         {
-            return base.Proveedores.ToList();
+            return Categorias.ToList();
         }
 
         public bool EsVacio(int ID)
         {
             Base cn = new Base();
-            string q = $@"SELECT TOP 1 * FROM dbo.Productos WHERE ProveedorID = @ID";
+            string q = $@"SELECT TOP 1 * FROM dbo.Productos WHERE Categoria = @ID";
             SqlCommand cmd = new SqlCommand(q);
             cmd.Parameters.Add("@ID", SqlDbType.Int).Value = ID;
 
@@ -54,9 +49,8 @@ namespace Datos
 
         public ClasePersistente Consultar(int ID)
         {
-            return base.Proveedores.Find(ID);
+            return Categorias.Find(ID);
         }
-
 
     }
 }

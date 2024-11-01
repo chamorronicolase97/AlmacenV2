@@ -18,5 +18,17 @@ namespace Escritorio
             frmABMSProveedores f = new frmABMSProveedores();
             f.Show();
         }
+
+        private void categoriasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmABMSCategorias f = new frmABMSCategorias();
+            f.Show();
+        }
+
+        private void productosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmABMSProductos f = new frmABMSProductos();    
+            f.Show();
+        }
     }
 }

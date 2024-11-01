@@ -8,29 +8,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClasePersistente = Entidades.Proveedor;
-using ClaseNegocio = Negocio.Proveedor;
-using frmAMC = Escritorio.frmAMCProveedor;
+using ClasePersistente = Entidades.Categoria;
+using ClaseNegocio = Negocio.Categoria;
+using frmAMC = Escritorio.frmAMCCategoria;
 
 namespace Escritorio
 {
-    public partial class frmABMSProveedores : Form
+    public partial class frmABMSCategorias : Form
     {
         private ClasePersistente _objetoSeleccionado;
         private BindingSource bindingSource;
         private bool _modoSeleccion;
 
-        public frmABMSProveedores()
+        public frmABMSCategorias()
         {
             InitializeComponent();
 
             bindingSource = new BindingSource();
-
         }
+
         public ClasePersistente ObjetoSeleccionado { get { return _objetoSeleccionado; } set { _objetoSeleccionado = value; } }
         public bool ModoSeleccion { get { return _modoSeleccion; } set { _modoSeleccion = value; } }
-
-        private void frmABMSProveedores_Load(object sender, EventArgs e)
+        private void frmABMSCategorias_Load(object sender, EventArgs e)
 
         {
             if (_modoSeleccion)
@@ -49,13 +48,12 @@ namespace Escritorio
             bindingSource.DataSource = datos;
             dgvDatos.DataSource = bindingSource;
 
-            dgvDatos.Columns["ProveedorID"].HeaderText = "ID";
-            dgvDatos.Columns["RazonSocial"].HeaderText = "Razón Social";
-            dgvDatos.Columns["Direccion"].HeaderText = "Dirección";
-            dgvDatos.Columns["Telefono"].HeaderText = "Teléfono";
+            dgvDatos.Columns["CategoriaID"].HeaderText = "ID";
+            dgvDatos.Columns["Descripcion"].HeaderText = "Descripción";
 
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
         }
+
 
         private void btnCrear_Click(object sender, EventArgs e)
         {
@@ -69,15 +67,14 @@ namespace Escritorio
         {
             if (dgvDatos.CurrentRow == null) return;
 
-            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["ProveedorID"].Value));
+            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["CategoriaID"].Value));
 
-
-            DialogResult = MessageBox.Show("Desea eliminar al Proveedor " + Clase.RazonSocial + "?", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult = MessageBox.Show("Desea eliminar la categoría " + Clase.Descripcion + "?", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (DialogResult == DialogResult.No) return;
 
-            if (!ClaseNegocio.EsVacio(Clase.ProveedorID))
+            if (!ClaseNegocio.EsVacio(Clase.CategoriaID))
             {
-                frmMostrarMensaje.MostrarMensaje($"{ClasePersistente.NombreClase}", "El Proveedor " + ClasePersistente.NombreClase + " no se encuentra vacio, no puede eliminarse.");
+                frmMostrarMensaje.MostrarMensaje($"{ClasePersistente.NombreClase}", "La Categoría " + ClasePersistente.NombreClase + " no se encuentra vacia, no puede eliminarse.");
                 return;
             }
             ClaseNegocio.Eliminar(Clase);
@@ -91,7 +88,7 @@ namespace Escritorio
         {
             if (dgvDatos.CurrentRow == null) return;
 
-            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["ProveedorID"].Value));
+            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["CategoriaID"].Value));
 
             frmAMC f = new frmAMC();
             f.Clase = Clase;
@@ -108,15 +105,14 @@ namespace Escritorio
                 return;
             }
 
-            _objetoSeleccionado = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["ProveedorID"].Value));
+            _objetoSeleccionado = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["CategoriaID"].Value));
 
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        private void AplicarFiltroRapido()
+        private void txtFiltro_TextChanged(object sender, EventArgs e)
         {
-            string str = "";
             string filtro = txtFiltro.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(filtro))
             {
@@ -124,27 +120,18 @@ namespace Escritorio
             }
             else
             {
-                str += $@"RazonSocial LIKE '%{filtro}%' OR Direccion LIKE '%{filtro}%'
-                                        OR Mail LIKE '%{filtro}%' and ";
+                bindingSource.Filter = $"Descripcion LIKE '%{filtro}%' OR Convert(Utilidad, 'System.String') LIKE '%{filtro}%'";
             }
-
-            str += "1=1";
-            bindingSource.Filter = str;
-        }
-
-        private void txtFiltro_TextChanged(object sender, EventArgs e)
-        {
-            AplicarFiltroRapido();
         }
 
         private async void btnConsultar_Click(object sender, EventArgs e)
         {
-            if (dgvDatos.CurrentRow != null)
+            if(dgvDatos.CurrentRow != null)
             {
-                frmAMC f = new frmAMC();
-                ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["ProveedorID"].Value));
+                frmAMCCategoria f = new frmAMCCategoria();
+                ClasePersistente categoria = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["CategoriaID"].Value));
                 f.SoloLectura = true;
-                f.Clase = Clase;
+                f.Clase = categoria;
                 f.Show(this);
             }
         }
