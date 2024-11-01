@@ -66,7 +66,7 @@ namespace Escritorio
 
                     if (Modificacion)
                     {
-                         ClaseNegocio.Modificar(Clase);
+                        ClaseNegocio.Modificar(Clase);
                     }
                 }
             }

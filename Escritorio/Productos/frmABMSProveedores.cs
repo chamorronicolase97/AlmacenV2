@@ -8,27 +8,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClasePersistente = Entidades.Grupo;
-using ClaseNegocio = Negocio.Grupo;
-using frmAMC = Escritorio.frmAMCGrupo;
+using ClasePersistente = Entidades.Proveedor;
+using ClaseNegocio = Negocio.Proveedor;
+using frmAMC = Escritorio.frmAMCProveedor;
 
 namespace Escritorio
 {
-    public partial class frmABMSGrupos : Form
+    public partial class frmABMSProveedores : Form
     {
         private ClasePersistente _objetoSeleccionado;
         private BindingSource bindingSource;
-        private bool _modoSeleccion = false;
-        public frmABMSGrupos()
+        private bool _modoSeleccion;
+
+        public frmABMSProveedores()
         {
             InitializeComponent();
 
             bindingSource = new BindingSource();
+
         }
         public ClasePersistente ObjetoSeleccionado { get { return _objetoSeleccionado; } set { _objetoSeleccionado = value; } }
         public bool ModoSeleccion { get { return _modoSeleccion; } set { _modoSeleccion = value; } }
 
-        private void frmABMSGrupos_Load(object sender, EventArgs e)
+        private void frmABMSProveedores_Load(object sender, EventArgs e)
 
         {
             if (_modoSeleccion)
@@ -37,7 +39,6 @@ namespace Escritorio
                 btnModificar.Enabled = false;
                 btnBorrar.Enabled = false;
             }
-
             CargarGrilla();
         }
 
@@ -46,10 +47,12 @@ namespace Escritorio
             var datos = await ClaseNegocio.ListarTodos();
 
             bindingSource.DataSource = datos;
-            dgvDatos.DataSource = bindingSource.DataSource;
+            dgvDatos.DataSource = bindingSource;
 
-            dgvDatos.Columns["GrupoID"].HeaderText = "ID";
-            dgvDatos.Columns["Descripcion"].HeaderText = "Descripción";
+            dgvDatos.Columns["ProveedorID"].HeaderText = "ID";
+            dgvDatos.Columns["RazonSocial"].HeaderText = "Razón Social";
+            dgvDatos.Columns["Direccion"].HeaderText = "Dirección";
+            dgvDatos.Columns["Telefono"].HeaderText = "Teléfono";
 
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
         }
@@ -66,12 +69,13 @@ namespace Escritorio
         {
             if (dgvDatos.CurrentRow == null) return;
 
-            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
+            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["ProveedorID"].Value));
 
-            DialogResult = MessageBox.Show("Desea eliminar el Grupo " + Clase.Descripcion + "?", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            DialogResult = MessageBox.Show("Desea eliminar al Proveedor " + Clase.RazonSocial + "?", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (DialogResult == DialogResult.No) return;
 
-            if (!ClaseNegocio.EsVacio(Clase.GrupoID))
+            if (!ClaseNegocio.EsVacio(Clase.ProveedorID))
             {
                 frmMostrarMensaje.MostrarMensaje($"{ClasePersistente.NombreClase}", "El Grupo " + ClasePersistente.NombreClase + " no se encuentra vacio, no puede eliminarse.");
                 return;
@@ -87,8 +91,7 @@ namespace Escritorio
         {
             if (dgvDatos.CurrentRow == null) return;
 
-            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
-
+            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["ProveedorID"].Value));
 
             frmAMC f = new frmAMC();
             f.Clase = Clase;
@@ -97,7 +100,7 @@ namespace Escritorio
             if (f.DialogResult == DialogResult.OK) CargarGrilla();
         }
 
-        private async void btnSeleccionar_ClickAsync(object sender, EventArgs e)
+        private async void btnSeleccionar_Click(object sender, EventArgs e)
         {
             if (dgvDatos.CurrentRow == null)
             {
@@ -105,25 +108,13 @@ namespace Escritorio
                 return;
             }
 
-            _objetoSeleccionado = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
+            _objetoSeleccionado = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["ProveedorID"].Value));
 
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        private async void btnConsultar_Click(object sender, EventArgs e)
-        {
-            if (dgvDatos.CurrentRow != null)
-            {
-                frmAMC f = new frmAMC();
-                ClasePersistente grupo = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
-                f.SoloLectura = true;
-                f.Clase = grupo;
-                f.Show(this);
-            }
-        }
-
-        private void txtFiltro_TextChanged(object sender, EventArgs e)
+        private void AplicarFiltroRapido()
         {
             string str = "";
             string filtro = txtFiltro.Text.Trim().ToLower();
@@ -133,11 +124,29 @@ namespace Escritorio
             }
             else
             {
-                str += $@"Descripcion LIKE '%{filtro}%' and ";
+                str += $@"RazonSocial LIKE '%{filtro}%' OR Direccion LIKE '%{filtro}%'
+                                        OR Mail LIKE '%{filtro}%' and ";
             }
 
             str += "1=1";
             bindingSource.Filter = str;
+        }
+
+        private void txtFiltro_TextChanged(object sender, EventArgs e)
+        {
+            AplicarFiltroRapido();
+        }
+
+        private async void btnConsultar_Click(object sender, EventArgs e)
+        {
+            if (dgvDatos.CurrentRow != null)
+            {
+                frmAMC f = new frmAMC();
+                ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["ProveedorID"].Value));
+                f.SoloLectura = true;
+                f.Clase = Clase;
+                f.Show(this);
+            }
         }
     }
 }

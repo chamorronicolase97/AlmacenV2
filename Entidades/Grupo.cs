@@ -4,7 +4,6 @@
     {
         private int _grupoID;
         private string _descripcion;
-        private decimal _utilidad;
 
         #region Propiedades
         public int GrupoID { get { return _grupoID; } set { _grupoID = value; } }

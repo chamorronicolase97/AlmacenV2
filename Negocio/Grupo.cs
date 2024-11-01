@@ -1,5 +1,4 @@
-﻿//using System.Text.Json.Serialization;
-using Azure.Core;
+﻿using Azure.Core;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using ClasePersistente = Entidades.Grupo;

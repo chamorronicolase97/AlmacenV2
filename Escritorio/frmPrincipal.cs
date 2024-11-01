@@ -10,7 +10,13 @@ namespace Escritorio
         private void gruposToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmABMSGrupos f = new frmABMSGrupos();
-            f.ShowDialog();
+            f.Show();
+        }
+
+        private void proveedoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmABMSProveedores f = new frmABMSProveedores();
+            f.Show();
         }
     }
 }
