@@ -1,26 +1,48 @@
-﻿using ClasePersistente = Entidades.Permiso;
-using Capa = Datos.Permiso;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http.Json;
+using System.Text;
+using System.Threading.Tasks;
+using ClasePersistente = Entidades.Permiso;
+
 namespace Negocio
 {
     public class Permiso
     {
-
-        public static void Agregar(ClasePersistente clase)
+        public async static Task<bool> Agregar(ClasePersistente clase)
         {
-            Capa Capa = new Capa();
-            Capa.Insertar(clase);
+            var response = await Conexion.Instancia.Cliente.PostAsJsonAsync("https://localhost:7173/api/Permiso", clase);
+            return response.IsSuccessStatusCode;
         }
 
-        public static void Modificar(ClasePersistente clase)
+        public async static void Modificar(ClasePersistente clase)
         {
-            Capa Capa = new Capa();
-            Capa.Modificar(clase);
+            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync<ClasePersistente>($"https://localhost:7173/api/Permiso/{clase.PermisoID}", clase);
         }
 
-        public static void Eliminar(ClasePersistente clase)
+        public async static void Eliminar(ClasePersistente clase)
         {
-            Capa Capa = new Capa();
-            Capa.Eliminar(clase);
+            var response = await Conexion.Instancia.Cliente.DeleteAsync($"https://localhost:7173/api/Permiso/{clase.PermisoID}");
+
         }
+
+
+        public async static Task<IEnumerable<ClasePersistente>> ListarTodos()
+        {
+            var response = await Conexion.Instancia.Cliente.GetStringAsync("https://localhost:7173/api/Permiso");
+            var data = JsonConvert.DeserializeObject<List<ClasePersistente>>(response);
+            return data;
+        }
+
+        public async static Task<ClasePersistente> Get(int ID)
+        {
+            var response = await Conexion.Instancia.Cliente.GetStringAsync($"https://localhost:7173/api/Permiso/{ID}");
+            var data = JsonConvert.DeserializeObject<ClasePersistente>(response);
+            return data;
+
+        }
+
     }
 }

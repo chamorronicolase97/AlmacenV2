@@ -27,6 +27,7 @@ namespace Datos
         public DbSet<Entidades.DetallePedido> DetallesPedidos { get; set; }
         public DbSet<Entidades.Recepcion> Recepciones { get; set; }
         public DbSet<Entidades.DetalleRecepcion> DetallesRecepciones { get; set; }
+        public DbSet<Entidades.Cliente> Clientes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

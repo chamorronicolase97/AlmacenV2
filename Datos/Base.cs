@@ -19,17 +19,17 @@ namespace Sistema
 
         public Base()
         {
-            //try
-            //{
-            //    Conectarbd.ConnectionString = connectionString2;
-            //}
-            //catch { }
-
             try
             {
-                Conectarbd.ConnectionString = connectionString;
+                Conectarbd.ConnectionString = connectionString2;
             }
             catch { }
+
+            //try
+            //{
+            //    Conectarbd.ConnectionString = connectionString;
+            //}
+            //catch { }
         }
 
         public void Abrir()
