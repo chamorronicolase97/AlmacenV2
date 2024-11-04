@@ -31,7 +31,7 @@ namespace Negocio
 
         public async static Task<IEnumerable<ClasePersistente>> ListarTodos(int PedidoID)
         {
-            var response = await Conexion.Instancia.Cliente.GetStringAsync($"https://localhost:7173/api/DetallePedido/{PedidoID}");
+            var response = await Conexion.Instancia.Cliente.GetStringAsync($"https://localhost:7173/api/DetallePedido/Listar/{PedidoID}");
             var data = JsonConvert.DeserializeObject<List<ClasePersistente>>(response);
             return data;
         }

@@ -11,7 +11,7 @@ namespace Entidades
         private int _pedidoId;
         private DateTime _fechaEntrega;
         private Proveedor _proveedor;
-        private PedidoEstado _pedidoEstado;
+        private PedidoEstado? _pedidoEstado;
 
         #region Constantes
         public const string NombreClase = "Pedido";
@@ -22,8 +22,8 @@ namespace Entidades
         public DateTime FechaEntrega { get { return _fechaEntrega; } set { _fechaEntrega = value; } }
         public int ProveedorID { get; set; }
         public Proveedor Proveedor { get { return _proveedor; } set { _proveedor = value; } }
-        public int PedidoEstadoID { get; set; }
-        public PedidoEstado PedidoEstado { get { return _pedidoEstado; } set { _pedidoEstado = value; } }
+        public int? PedidoEstadoID { get; set; }
+        public PedidoEstado? PedidoEstado { get { return _pedidoEstado; } set { _pedidoEstado = value; } }
 
         //public ICollection<DetallePedido> DetallesPedido { get; set; }
         #endregion

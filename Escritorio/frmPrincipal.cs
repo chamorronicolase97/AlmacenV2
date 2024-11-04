@@ -27,7 +27,13 @@ namespace Escritorio
 
         private void productosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmABMSProductos f = new frmABMSProductos();    
+            frmABMSProductos f = new frmABMSProductos();
+            f.Show();
+        }
+
+        private void pedidosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmABMSPedidos f = new frmABMSPedidos();
             f.Show();
         }
     }

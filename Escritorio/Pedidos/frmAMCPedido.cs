@@ -163,11 +163,11 @@ namespace Escritorio
               await  ClaseNegocio.Agregar(Clase);
             }
 
-            //frmAMCDetallePedido f = new frmAMCDetallePedido();
-            //f.Pedido = Clase;
-            //f.FiltroProveedor = _proveedor;
-            
-            //f.ShowDialog(this);
+            frmAMCDetallePedido f = new frmAMCDetallePedido();
+            f.Pedido = Clase;
+            f.FiltroProveedor = _proveedor;
+
+            f.ShowDialog(this);
             CargarGrillaDetalles();
         }
 
@@ -183,7 +183,7 @@ namespace Escritorio
                 p.CostoUnitario,
             }).ToList();
             dgvDetalles.DataSource = pedidosview;
-            dgvDetalles.Columns["ID"].HeaderText = "Nro. Pedido";
+            dgvDetalles.Columns["PedidoID"].HeaderText = "Nro. Pedido";
         }
 
         private void HabilitarControles()
