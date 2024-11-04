@@ -25,26 +25,26 @@ namespace Web
         [HttpGet("{ID}")]
         public ActionResult<Clase> GetbyID(int ID)
         {
-            var grupo = _producto.Consultar(ID);
+            var producto = _producto.Consultar(ID);
 
-            if (grupo == null) return NotFound();
+            if (producto == null) return NotFound();
 
-            return grupo;
+            return producto;
         }
 
         [HttpPost]
-        public ActionResult<Clase> Create(Clase proveedor)
+        public ActionResult<Clase> Create(Clase producto)
         {
-            _producto.Insertar(proveedor);
+            _producto.Insertar(producto);
             return CreatedAtAction(nameof(GetbyID), null);
         }
 
         [HttpPut("{ID}")]
-        public ActionResult Update(int ID, Clase proveedor)
+        public ActionResult Update(int ID, Clase producto)
         {
-            if (ID != proveedor.ProductoID) return BadRequest();
+            if (ID != producto.ProductoID) return BadRequest();
 
-            _producto.Modificar(proveedor);
+            _producto.Modificar(producto);
 
             return NoContent();
         }
@@ -52,14 +52,13 @@ namespace Web
         [HttpDelete("{ID}")]
         public ActionResult<Clase> Delete(int ID)
         {
-            var grupo = _producto.Consultar(ID);
+            var producto = _producto.Consultar(ID);
 
-            if (grupo == null) return NotFound();
+            if (producto == null) return NotFound();
 
-            _producto.Eliminar(grupo);
+            _producto.Eliminar(producto);
 
-            return grupo;
+            return producto;
         }
-
     }
 }

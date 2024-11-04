@@ -64,7 +64,7 @@ namespace Escritorio
             Close();
         }
 
-        private void btnAceptar_Click(object sender, EventArgs e)
+        private async void btnAceptar_Click(object sender, EventArgs e)
         {
             if (_soloLectura)
             {
@@ -80,20 +80,25 @@ namespace Escritorio
                     Clase = new Producto
                     {
                         Descripcion = txtDescripcion.Text,
-                        Costo = Convert.ToInt32(txtCosto.Text),
+                        Costo = null,
                         CodigoDeBarra = txtCodBarra.Text,
                         Proveedor = _proveedor,
-                        Categoria = _categoria
+                        ProveedorID = _proveedor.ProveedorID,
+                        Categoria  = _categoria,
+                        CategoriaID = _categoria.CategoriaID
+                       
                     };
-                    ClaseNegocio.Agregar( Clase );
+                  await  ClaseNegocio.Agregar( Clase );
                 }
                 else
                 {
                     Clase.Descripcion = txtDescripcion.Text;
-                    Clase.Costo = null;
+                    Clase.Costo = Convert.ToDecimal(txtCosto.Text);
                     Clase.CodigoDeBarra = txtCodBarra.Text;
                     Clase.Proveedor = _proveedor;
+                    Clase.ProveedorID = _proveedor.ProveedorID;
                     Clase.Categoria = _categoria;
+                    Clase.CategoriaID = _categoria.CategoriaID;
 
                     if (Modificacion)
                     {

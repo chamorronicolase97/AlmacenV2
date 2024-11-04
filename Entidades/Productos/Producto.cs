@@ -37,6 +37,9 @@ namespace Entidades
         //public decimal ValorVenta => Costo.GetValueOrDefault(0) + ((Costo.GetValueOrDefault(0) * Categoria.Utilidad) / 100);
         #endregion
 
-        public Producto() { }
+        public Producto()
+        { 
+            
+        }
     }
 }

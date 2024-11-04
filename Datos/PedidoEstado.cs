@@ -1,5 +1,4 @@
-﻿using Entidades;
-using Sistema;
+﻿using Sistema;
 using System.Data.SqlClient;
 using System.Data;
 using ClasePersistente = Entidades.PedidoEstado;

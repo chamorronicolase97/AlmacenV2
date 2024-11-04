@@ -11,8 +11,7 @@
         #endregion
         public const string NombreClase = "PedidoEstado";
 
-        public PedidoEstado() { }
-
+        public PedidoEstado() { }      
 
     }
 }

@@ -15,8 +15,17 @@ namespace Datos
 
         public void Insertar(ClasePersistente clase)
         {
-            base.Productos.Add(clase);
-            base.SaveChanges();
+            try
+            {
+                base.Categorias.Attach(clase.Categoria);
+                base.Proveedores.Attach(clase.Proveedor);
+                base.Productos.Add(clase);            
+                base.SaveChanges();
+            }
+            catch(Exception ex) 
+            {
+                throw new Exception("Error al insertar el producto: " + ex.Message);
+            }
         }
 
         public void Modificar(ClasePersistente clase)

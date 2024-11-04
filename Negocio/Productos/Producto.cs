@@ -19,12 +19,12 @@ namespace Negocio
 
         public async static void Modificar(ClasePersistente clase)
         {
-            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync<ClasePersistente>($"https://localhost:7173/api/Producto/{clase.ProveedorID}", clase);
+            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync<ClasePersistente>($"https://localhost:7173/api/Producto/{clase.ProductoID}", clase);
         }
 
         public async static void Eliminar(ClasePersistente clase)
         {
-            var response = await Conexion.Instancia.Cliente.DeleteAsync($"https://localhost:7173/api/Producto/{clase.ProveedorID}");
+            var response = await Conexion.Instancia.Cliente.DeleteAsync($"https://localhost:7173/api/Producto/{clase.ProductoID}");
 
         }
 
