@@ -22,6 +22,7 @@ namespace Datos
         public DbSet<Entidades.PedidoEstado> PedidosEstados { get; set; }
         public DbSet<Entidades.Proveedor> Proveedores { get; set; } 
         public DbSet<Entidades.Producto> Productos { get; set; }
+        public DbSet<Entidades.Pedido> Pedidos { get; set; }    
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

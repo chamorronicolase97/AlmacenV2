@@ -36,6 +36,8 @@ namespace Datos
 
         public void Eliminar(ClasePersistente clase)
         {
+            base.Categorias.Attach(clase.Categoria);
+            base.Proveedores.Attach(clase.Proveedor);
             base.Productos.Remove(clase);
             base.SaveChanges();
         }

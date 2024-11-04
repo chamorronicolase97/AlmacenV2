@@ -70,7 +70,7 @@ namespace Escritorio
                 cmbProveedor.Enabled = false;
             }
 
-            if(_modoSeleccion)
+            if (_modoSeleccion)
             {
                 btnCrear.Enabled = false;
                 btnModificar.Enabled = false;
@@ -85,14 +85,14 @@ namespace Escritorio
         private async void CargarGrilla()
         {
             var listado = await ClaseNegocio.ListarTodos();
-            if (FiltroProveedor != null) 
-            {                
+            if (FiltroProveedor != null)
+            {
                 var listadoFiltrado = listado.Where(f => f.ProveedorID == FiltroProveedor.ProveedorID).ToList();
                 bindingSource.DataSource = listadoFiltrado;
             }
-            else 
-            { 
-                bindingSource.DataSource = listado; 
+            else
+            {
+                bindingSource.DataSource = listado;
             }
             dgvDatos.DataSource = bindingSource;
 

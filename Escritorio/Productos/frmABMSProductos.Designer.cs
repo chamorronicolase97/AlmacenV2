@@ -39,12 +39,12 @@
             cmbCategoria = new ComboBox();
             txtFiltro = new TextBox();
             pnlBotones = new Panel();
+            btnConsultar = new Button();
             btnSeleccionar = new Button();
             btnBorrar = new Button();
             btnCrear = new Button();
             btnModificar = new Button();
             toolTip1 = new ToolTip(components);
-            btnConsultar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvDatos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -66,7 +66,7 @@
             dgvDatos.ReadOnly = true;
             dgvDatos.RowHeadersWidth = 51;
             dgvDatos.RowTemplate.Height = 29;
-            dgvDatos.Size = new Size(656, 292);
+            dgvDatos.Size = new Size(656, 293);
             dgvDatos.TabIndex = 0;
             // 
             // splitContainer1
@@ -106,6 +106,7 @@
             // 
             // cmbProveedor
             // 
+            cmbProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbProveedor.FormattingEnabled = true;
             cmbProveedor.Location = new Point(452, 24);
             cmbProveedor.Name = "cmbProveedor";
@@ -136,6 +137,7 @@
             // 
             // cmbCategoria
             // 
+            cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCategoria.FormattingEnabled = true;
             cmbCategoria.Location = new Point(259, 24);
             cmbCategoria.Name = "cmbCategoria";
@@ -165,6 +167,18 @@
             pnlBotones.Name = "pnlBotones";
             pnlBotones.Size = new Size(40, 205);
             pnlBotones.TabIndex = 12;
+            // 
+            // btnConsultar
+            // 
+            btnConsultar.Image = (Image)resources.GetObject("btnConsultar.Image");
+            btnConsultar.Location = new Point(3, 2);
+            btnConsultar.Margin = new Padding(3, 2, 3, 2);
+            btnConsultar.Name = "btnConsultar";
+            btnConsultar.Size = new Size(35, 35);
+            btnConsultar.TabIndex = 16;
+            toolTip1.SetToolTip(btnConsultar, "Nuevo");
+            btnConsultar.UseVisualStyleBackColor = true;
+            btnConsultar.Click += btnConsultar_Click;
             // 
             // btnSeleccionar
             // 
@@ -214,18 +228,6 @@
             toolTip1.SetToolTip(btnModificar, "Modificar");
             btnModificar.UseVisualStyleBackColor = true;
             btnModificar.Click += btnModificar_Click;
-            // 
-            // btnConsultar
-            // 
-            btnConsultar.Image = (Image)resources.GetObject("btnConsultar.Image");
-            btnConsultar.Location = new Point(3, 2);
-            btnConsultar.Margin = new Padding(3, 2, 3, 2);
-            btnConsultar.Name = "btnConsultar";
-            btnConsultar.Size = new Size(35, 35);
-            btnConsultar.TabIndex = 16;
-            toolTip1.SetToolTip(btnConsultar, "Nuevo");
-            btnConsultar.UseVisualStyleBackColor = true;
-            btnConsultar.Click += btnConsultar_Click;
             // 
             // frmABMSProductos
             // 
