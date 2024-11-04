@@ -19,7 +19,7 @@ namespace Web
         [HttpGet(Name = "ListarPedidos")]
         public ActionResult<IEnumerable<Clase>> GetAll()
         {
-            return _pedido.ListarProductos();
+            return _pedido.ListarPedidos();
         }
 
         [HttpGet("{ID}")]
@@ -60,5 +60,6 @@ namespace Web
 
             return pedido;
         }
+
     }
 }

@@ -33,7 +33,7 @@ namespace Entidades
         public int ProveedorID { get; set; }
         public Proveedor Proveedor { get { return _proveedor; } set { _proveedor = value; } }
         public int? Stock { get { return _stock; } set { _stock = value; } }
-
+        //public ICollection<DetallePedido> DetallesPedido { get; set; }
         //public decimal ValorVenta => Costo.GetValueOrDefault(0) + ((Costo.GetValueOrDefault(0) * Categoria.Utilidad) / 100);
         #endregion
 

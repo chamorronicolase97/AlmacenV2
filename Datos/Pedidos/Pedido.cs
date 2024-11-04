@@ -42,14 +42,14 @@ namespace Datos
             base.SaveChanges();
         }
 
-        public List<ClasePersistente> ListarProductos()
+        public List<ClasePersistente> ListarPedidos()
         {
             return base.Pedidos.Include(u => u.PedidoEstado).Include(u => u.Proveedor).ToList();
         }
 
         public ClasePersistente Consultar(int ID)
         {
-            return base.Pedidos.Include(u => u.PedidoEstado).Include(u => u.Proveedor).FirstOrDefault(u => u.ID == ID);
+            return base.Pedidos.Include(u => u.PedidoEstado).Include(u => u.Proveedor).FirstOrDefault(u => u.PedidoID == ID);
         }
     }
 }

@@ -9,9 +9,9 @@ namespace Negocio
 {
     public class PedidoEstado
     {
-        static ClasePersistente EnEdicion => new Datos.PedidoEstado().Consultar(1);
-        static ClasePersistente Confirmado => new Datos.PedidoEstado().Consultar(2);
-        static ClasePersistente Cancelado => new Datos.PedidoEstado().Consultar(3);
+        public static ClasePersistente EnEdicion => new Datos.PedidoEstado().Consultar(1);
+        public static ClasePersistente Confirmado => new Datos.PedidoEstado().Consultar(2);
+        public static ClasePersistente Cancelado => new Datos.PedidoEstado().Consultar(3);
 
     }
 }

@@ -44,6 +44,11 @@ namespace Negocio
 
         }
 
+        public static bool TieneRecepcion(ClasePersistente clase)
+        {
+            //continuar
+            return true;
+        }
     }
 }
 

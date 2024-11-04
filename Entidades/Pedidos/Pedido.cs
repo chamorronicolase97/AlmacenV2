@@ -24,6 +24,8 @@ namespace Entidades
         public Proveedor Proveedor { get { return _proveedor; } set { _proveedor = value; } }
         public int PedidoEstadoID { get; set; }
         public PedidoEstado PedidoEstado { get { return _pedidoEstado; } set { _pedidoEstado = value; } }
+
+        //public ICollection<DetallePedido> DetallesPedido { get; set; }
         #endregion
 
         public Pedido() { }

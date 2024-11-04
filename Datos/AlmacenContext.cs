@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entidades;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,33 @@ namespace Datos
         public DbSet<Entidades.PedidoEstado> PedidosEstados { get; set; }
         public DbSet<Entidades.Proveedor> Proveedores { get; set; } 
         public DbSet<Entidades.Producto> Productos { get; set; }
-        public DbSet<Entidades.Pedido> Pedidos { get; set; }    
+        public DbSet<Entidades.Pedido> Pedidos { get; set; }  
+        public DbSet<Entidades.DetallePedido> DetallesPedidos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Data Source=HWNOTE163490\SQLEXPRESS;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
             //optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-KHKJ2OC;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Entidades.DetallePedido>().HasKey(p => new { p.PedidoID, p.ProductoID });
+
+            //// Configurar relación entre DetallePedido y Pedido
+            //modelBuilder.Entity<Entidades.DetallePedido>()
+            //    .HasOne(dp => dp.Pedido)
+            //    .WithMany(p => p.DetallesPedido)
+            //    .HasForeignKey(dp => dp.PedidoID);
+
+            //// Configurar relación entre DetallePedido y Producto
+            //modelBuilder.Entity<Entidades.DetallePedido>()
+            //    .HasOne(dp => dp.Producto)
+            //    .WithMany(pr => pr.DetallesPedido)
+            //    .HasForeignKey(dp => dp.ProductoID);
+
         }
     }
 }

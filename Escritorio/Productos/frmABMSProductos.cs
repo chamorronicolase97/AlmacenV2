@@ -84,15 +84,16 @@ namespace Escritorio
 
         private async void CargarGrilla()
         {
-            var listado = await ClaseNegocio.ListarTodos();
+            var listado = await ClaseNegocio.ListarTodos();           
+            var productosview = listado.Select(p => new { p.ProductoID, p.Descripcion, p.Costo, p.CodigoDeBarra, p.Proveedor.RazonSocial, p.ProveedorID, Categoria = p.Categoria.Descripcion, p.CategoriaID }).ToList();
             if (FiltroProveedor != null)
             {
-                var listadoFiltrado = listado.Where(f => f.ProveedorID == FiltroProveedor.ProveedorID).ToList();
+                var listadoFiltrado = productosview.Where(f => f.ProveedorID == FiltroProveedor.ProveedorID).ToList();
                 bindingSource.DataSource = listadoFiltrado;
             }
             else
-            {
-                bindingSource.DataSource = listado;
+            {                
+                bindingSource.DataSource = productosview;
             }
             dgvDatos.DataSource = bindingSource;
 
