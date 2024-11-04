@@ -7,25 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClasePersistente = Entidades.DetallePedido;
-using ClaseNegocio = Negocio.DetallePedido;
+using ClasePersistente = Entidades.DetalleRecepcion;
+using ClaseNegocio = Negocio.DetalleRecepcion;
 using Entidades;
 
 namespace Escritorio
 {
-    public partial class frmAMCDetallePedido : Form
+    public partial class frmAMCDetalleRecepcion : Form
     {
         private Producto? _producto;
         private Proveedor? _proveedor;
-        private Pedido  _pedido;
+        private Recepcion? _recepcion;
+
 
         public ClasePersistente Clase { get; set; }
 
+        public Proveedor Proveedor { get { return _proveedor; } set { _proveedor = value; } }
+        public Recepcion Recepcion { get { return _recepcion; } set { _recepcion = value; } }
         public bool Modificacion { get; set; } = false;
-        public Proveedor FiltroProveedor { get { return _proveedor; } set { _proveedor = value; } }
-        public Pedido Pedido { get { return _pedido; } set { _pedido = value; } }
 
-        public frmAMCDetallePedido()
+        public frmAMCDetalleRecepcion()
         {
             InitializeComponent();
 
@@ -35,21 +36,20 @@ namespace Escritorio
         {
             if (Modificacion == true)
             {
-                txtNroPedido.Text = Clase.Pedido.PedidoID.ToString();
+                txtRecepcionID.Text = Clase.Recepcion.RecepcionID.ToString();
                 if (txtProducto != null) { txtProducto.Text = Clase.Producto.Descripcion.ToString(); }
                 txtCantidad.Text = Clase.Cantidad.ToString();
                 txtCostoUnitario.Text = Clase.CostoUnitario.ToString();
             }
             else
             {
-
+                txtRecepcionID.Text = Recepcion.RecepcionID.ToString();
             }
         }
 
         private void HabilitarControles()
         {
             if (_producto != null) { txtProducto.Text = _producto.Descripcion.ToString(); }
-            else { txtProducto.Text = ""; }
 
         }
 
@@ -64,34 +64,35 @@ namespace Escritorio
 
             if (Clase == null)
             {
-                Clase = new DetallePedido();
-                Clase.Producto = _producto;
-                Clase.ProductoID = _producto.ProductoID;
-                Clase.Cantidad = Convert.ToInt32(txtCantidad.Text);
-                Clase.CostoUnitario = Convert.ToDecimal(txtCostoUnitario.Text);
+                Clase = new DetalleRecepcion();
+            }
 
-              await  ClaseNegocio.Agregar(Clase);
+            Clase.Recepcion = Recepcion;
+            Clase.Producto = _producto;
+            Clase.Cantidad = Convert.ToInt32(txtCantidad.Text);
+            Clase.CostoUnitario = Convert.ToDecimal(txtCostoUnitario.Text);
+            Clase.FechaRecepcion = dtpFechaRecepcion.Value;
+
+            if (Modificacion)
+            {
+                ClaseNegocio.Modificar(Clase);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             else
             {
-                Clase.Producto = _producto;
-                Clase.ProductoID = _producto.ProductoID;
-                Clase.Cantidad = Convert.ToInt32(txtCantidad.Text);
-                Clase.CostoUnitario = Convert.ToDecimal(txtCostoUnitario.Text);
-                if (Modificacion)
-                {
-                    ClaseNegocio.Modificar(Clase);
-                }
+
+               await ClaseNegocio.Agregar(Clase);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
-            this.DialogResult = DialogResult.OK;
-            this.Close();
         }
 
         private bool Validar()
         {
             if (txtProducto.Text.Length == 0)
             {
-                frmMostrarMensaje.MostrarMensaje("DetallePedido", "Debe definir una Producto para el DetallePedido");
+                frmMostrarMensaje.MostrarMensaje("DetalleRecepcion", "Debe definir una fecha para el DetalleRecepcion");
                 return false;
             }
 
@@ -102,14 +103,25 @@ namespace Escritorio
         {
             frmABMSProductos f = new frmABMSProductos { };
             f.ObjetoSeleccionado = _producto;
-            f.FiltroProveedor = _proveedor;
-            f.ModoSeleccion = true;
+            f.FiltroProveedor = Proveedor;
             if (DialogResult.OK == f.ShowDialog(this))
             {
                 _producto = f.ObjetoSeleccionado;
 
                 HabilitarControles();
             }
+        }
+
+        private void btnAsignarProveedor_Click(object sender, EventArgs e)
+        {
+            frmABMSProveedores f = new frmABMSProveedores { };
+            f.ObjetoSeleccionado = _proveedor;
+            if (DialogResult.OK == f.ShowDialog(this))
+            {
+                _proveedor = f.ObjetoSeleccionado;
+            }
+
+            HabilitarControles();
         }
 
         private void btnConsultarProducto_Click(object sender, EventArgs e)
@@ -124,13 +136,31 @@ namespace Escritorio
             f.ShowDialog(this);
         }
 
+        private void btnConsultarProveedor_Click(object sender, EventArgs e)
+        {
+            if (_proveedor == null) return;
+
+            frmAMCProveedor f = new frmAMCProveedor
+            {
+                Clase = _proveedor,
+                SoloLectura = true
+            };
+            f.ShowDialog(this);
+        }
+
         private void btnQuitarProducto_Click(object sender, EventArgs e)
         {
             if (_producto == null) return;
 
             _producto = null;
-            HabilitarControles();
         }
 
+        private void btnQuitarProveedor_Click(object sender, EventArgs e)
+        {
+            if (_proveedor == null) return;
+
+            _proveedor = null;
+            HabilitarControles();
+        }
     }
 }

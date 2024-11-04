@@ -36,5 +36,11 @@ namespace Escritorio
             frmABMSPedidos f = new frmABMSPedidos();
             f.Show();
         }
+
+        private void recepciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmABMSRecepciones f = new frmABMSRecepciones();
+            f.Show();
+        }
     }
 }

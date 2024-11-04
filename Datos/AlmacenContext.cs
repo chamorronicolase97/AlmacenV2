@@ -26,6 +26,7 @@ namespace Datos
         public DbSet<Entidades.Pedido> Pedidos { get; set; }  
         public DbSet<Entidades.DetallePedido> DetallesPedidos { get; set; }
         public DbSet<Entidades.Recepcion> Recepciones { get; set; }
+        public DbSet<Entidades.DetalleRecepcion> DetallesRecepciones { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,6 +39,7 @@ namespace Datos
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Entidades.DetallePedido>().HasKey(p => new { p.PedidoID, p.ProductoID });
+            modelBuilder.Entity<Entidades.DetalleRecepcion>().HasKey(p => new { p.RecepcionID, p.ProductoID });
 
             //// Configurar relación entre DetallePedido y Pedido
             //modelBuilder.Entity<Entidades.DetallePedido>()

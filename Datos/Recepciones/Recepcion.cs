@@ -46,7 +46,7 @@ namespace Datos
         {
             try
             {
-                return base.Recepciones.Include(u => u.Estado).Include(u => u.Pedido).ToList();
+                return base.Recepciones.Include(u => u.Estado).Include(u => u.Pedido).ThenInclude(p => p.Proveedor).ToList();
             }
             catch(Exception ex)
             {
@@ -56,7 +56,7 @@ namespace Datos
 
         public ClasePersistente Consultar(int ID)
         {
-            return base.Recepciones.Include(u => u.Estado).Include(u => u.Pedido).FirstOrDefault(u => u.RecepcionID == ID);
+            return base.Recepciones.Include(u => u.Estado).Include(u => u.Pedido).ThenInclude(p => p.Proveedor).FirstOrDefault(u => u.RecepcionID == ID);
         }
     }
 }

@@ -87,8 +87,9 @@
             // recepciónToolStripMenuItem
             // 
             recepciónToolStripMenuItem.Name = "recepciónToolStripMenuItem";
-            recepciónToolStripMenuItem.Size = new Size(129, 22);
+            recepciónToolStripMenuItem.Size = new Size(180, 22);
             recepciónToolStripMenuItem.Text = "Recepción";
+            recepciónToolStripMenuItem.Click += recepciónToolStripMenuItem_Click;
             // 
             // compraToolStripMenuItem
             // 
