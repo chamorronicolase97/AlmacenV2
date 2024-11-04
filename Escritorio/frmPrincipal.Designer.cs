@@ -128,28 +128,28 @@
             // categoriasToolStripMenuItem
             // 
             categoriasToolStripMenuItem.Name = "categoriasToolStripMenuItem";
-            categoriasToolStripMenuItem.Size = new Size(180, 22);
+            categoriasToolStripMenuItem.Size = new Size(167, 22);
             categoriasToolStripMenuItem.Text = "Categorias";
             categoriasToolStripMenuItem.Click += categoriasToolStripMenuItem_Click;
             // 
             // proveedoresToolStripMenuItem
             // 
             proveedoresToolStripMenuItem.Name = "proveedoresToolStripMenuItem";
-            proveedoresToolStripMenuItem.Size = new Size(180, 22);
+            proveedoresToolStripMenuItem.Size = new Size(167, 22);
             proveedoresToolStripMenuItem.Text = "Proveedores";
             proveedoresToolStripMenuItem.Click += proveedoresToolStripMenuItem_Click;
             // 
             // productosToolStripMenuItem
             // 
             productosToolStripMenuItem.Name = "productosToolStripMenuItem";
-            productosToolStripMenuItem.Size = new Size(180, 22);
+            productosToolStripMenuItem.Size = new Size(167, 22);
             productosToolStripMenuItem.Text = "Productos";
             productosToolStripMenuItem.Click += productosToolStripMenuItem_Click;
             // 
             // costosProductosToolStripMenuItem
             // 
             costosProductosToolStripMenuItem.Name = "costosProductosToolStripMenuItem";
-            costosProductosToolStripMenuItem.Size = new Size(180, 22);
+            costosProductosToolStripMenuItem.Size = new Size(167, 22);
             costosProductosToolStripMenuItem.Text = "Costos Productos";
             // 
             // configuraciónToolStripMenuItem
@@ -162,21 +162,23 @@
             // gruposToolStripMenuItem
             // 
             gruposToolStripMenuItem.Name = "gruposToolStripMenuItem";
-            gruposToolStripMenuItem.Size = new Size(122, 22);
+            gruposToolStripMenuItem.Size = new Size(180, 22);
             gruposToolStripMenuItem.Text = "Grupos";
             gruposToolStripMenuItem.Click += gruposToolStripMenuItem_Click;
             // 
             // usuariosToolStripMenuItem
             // 
             usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
-            usuariosToolStripMenuItem.Size = new Size(122, 22);
+            usuariosToolStripMenuItem.Size = new Size(180, 22);
             usuariosToolStripMenuItem.Text = "Usuarios";
+            usuariosToolStripMenuItem.Click += usuariosToolStripMenuItem_Click;
             // 
             // permisosToolStripMenuItem
             // 
             permisosToolStripMenuItem.Name = "permisosToolStripMenuItem";
-            permisosToolStripMenuItem.Size = new Size(122, 22);
+            permisosToolStripMenuItem.Size = new Size(180, 22);
             permisosToolStripMenuItem.Text = "Permisos";
+            permisosToolStripMenuItem.Click += permisosToolStripMenuItem_Click;
             // 
             // menuStrip1
             // 
