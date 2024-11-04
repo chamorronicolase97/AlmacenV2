@@ -69,6 +69,8 @@ namespace Escritorio
                 Clase.ProductoID = _producto.ProductoID;
                 Clase.Cantidad = Convert.ToInt32(txtCantidad.Text);
                 Clase.CostoUnitario = Convert.ToDecimal(txtCostoUnitario.Text);
+                Clase.PedidoID = _pedido.PedidoID;
+                Clase.Pedido = _pedido;
 
               await  ClaseNegocio.Agregar(Clase);
             }

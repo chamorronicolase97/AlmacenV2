@@ -36,7 +36,7 @@ namespace Web
         public ActionResult<Clase> Create(Clase pedido)
         {
             _pedido.Insertar(pedido);
-            return CreatedAtAction(nameof(GetbyID), null);
+            return CreatedAtAction(nameof(GetbyID), new { id = pedido.PedidoID }, pedido);
         }
 
         [HttpPut("{ID}")]

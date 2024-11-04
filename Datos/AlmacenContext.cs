@@ -1,5 +1,6 @@
 ﻿using Entidades;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace Datos
         {
             optionsBuilder.UseSqlServer(@"Data Source=HWNOTE163490\SQLEXPRESS;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
             //optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-KHKJ2OC;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
+             optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,6 +43,7 @@ namespace Datos
 
             modelBuilder.Entity<Entidades.DetallePedido>().HasKey(p => new { p.PedidoID, p.ProductoID });
             modelBuilder.Entity<Entidades.DetalleRecepcion>().HasKey(p => new { p.RecepcionID, p.ProductoID });
+
 
             //// Configurar relación entre DetallePedido y Pedido
             //modelBuilder.Entity<Entidades.DetallePedido>()

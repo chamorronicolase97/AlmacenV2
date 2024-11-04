@@ -18,7 +18,7 @@ namespace Escritorio
 {
     public partial class frmABMSPedidos : Form
     {
-        private BindingSource bindingSource;
+        private BindingSource bindingSource; 
         private bool _modoSeleccion;
         private IEnumerable<Entidades.Pedido> _listado;
         public ClasePersistente Pedido { get; set; }

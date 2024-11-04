@@ -52,8 +52,8 @@ namespace Escritorio
                 }
             }
             else
-            {                
-                
+            {
+                txtNroPedido.Text = "0"; 
             }
 
 
@@ -160,7 +160,8 @@ namespace Escritorio
                     Proveedor = _proveedor,
                     PedidoEstado = Negocio.PedidoEstado.EnEdicion
                 };
-              await  ClaseNegocio.Agregar(Clase);
+                Clase = await ClaseNegocio.Agregar(Clase);
+                _nroPedido = Clase.PedidoID;
             }
 
             frmAMCDetallePedido f = new frmAMCDetallePedido();
@@ -173,6 +174,7 @@ namespace Escritorio
 
         private async void CargarGrillaDetalles()
         {
+            txtNroPedido.Text = _nroPedido.ToString();
             _listadoDetalle = await Negocio.DetallePedido.ListarTodos(_nroPedido);
             var pedidosview = _listadoDetalle.Select(p => new
             {

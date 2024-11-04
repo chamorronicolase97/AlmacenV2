@@ -11,11 +11,21 @@ namespace Negocio
 {
     public class Pedido
     {
-        public async static Task<bool> Agregar(ClasePersistente clase)
+        public async static Task<ClasePersistente> Agregar(ClasePersistente clase)
         {
             var response = await Conexion.Instancia.Cliente.PostAsJsonAsync("https://localhost:7173/api/Pedido", clase);
-            return response.IsSuccessStatusCode;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Error al agregar el pedido: {response.ReasonPhrase}");
+            }
+
+            // Usa ReadAsStringAsync() para obtener el contenido JSON
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<ClasePersistente>(content);
+            return data;
         }
+
 
         public async static void Modificar(ClasePersistente clase)
         {

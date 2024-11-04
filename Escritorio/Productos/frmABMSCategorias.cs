@@ -48,8 +48,8 @@ namespace Escritorio
             bindingSource.DataSource = datos;
             dgvDatos.DataSource = bindingSource;
 
-            dgvDatos.Columns["CategoriaID"].HeaderText = "ID";
-            dgvDatos.Columns["Descripcion"].HeaderText = "Descripción";
+            //dgvDatos.Columns["CategoriaID"].HeaderText = "ID";
+            //dgvDatos.Columns["Descripcion"].HeaderText = "Descripción";
 
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
         }
