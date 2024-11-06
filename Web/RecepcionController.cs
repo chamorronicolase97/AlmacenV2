@@ -32,11 +32,21 @@ namespace Web
             return pedido;
         }
 
+        [HttpGet("GetByPedidoID/{PedidoID}")]
+        public ActionResult<Clase> GetbyPedidoID(int PedidoID)
+        {
+            var pedido = _recepcion.ConsultarPorPedido(PedidoID);
+
+            if (pedido == null) return NotFound();
+
+            return pedido;
+        }
+
         [HttpPost]
         public ActionResult<Clase> Create(Clase recepcion)
         {
             _recepcion.Insertar(recepcion);
-            return CreatedAtAction(nameof(GetbyID), null);
+            return CreatedAtAction(nameof(GetbyID), new {id = recepcion.RecepcionID }, recepcion);
         }
 
         [HttpPut("{ID}")]

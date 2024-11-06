@@ -70,7 +70,7 @@ namespace Escritorio
             f.SoloLectura = false;
             
             f.ShowDialog();
-            if (f.DialogResult == DialogResult.OK) CargarGrilla();
+            if (f.DialogResult == DialogResult.OK)  CargarGrilla();
         }
 
         private async void btnBorrar_Click(object sender, EventArgs e)
@@ -82,9 +82,9 @@ namespace Escritorio
             DialogResult = MessageBox.Show("Desea eliminar el Pedido " + Clase.RecepcionID + "?", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (DialogResult == DialogResult.No) return;
 
-            if (ClaseNegocio.TieneRecepcion(Clase))
+            if (_listado.Count() > 0)
             {
-                frmMostrarMensaje.MostrarMensaje($"{Recepcion.NombreClase}", "El " + Recepcion.NombreClase + " posee una recepción, no puede eliminarse.");
+                frmMostrarMensaje.MostrarMensaje($"{Recepcion.NombreClase}", "El " + Recepcion.NombreClase + " posee Detalles Recepciones, no puede eliminarse.");
                 return;
             }
             ClaseNegocio.Eliminar(Clase);

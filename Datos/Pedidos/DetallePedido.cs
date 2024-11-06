@@ -10,7 +10,7 @@ namespace Datos
 {
     public class DetallePedido : AlmacenContext
     {
-        const string Tabla = "dbo.Pedidos";
+        const string Tabla = "dbo.DetallesPedidos";
         public DetallePedido() : base() { }
 
         public void Insertar(ClasePersistente clase)
@@ -50,7 +50,7 @@ namespace Datos
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al insertar el pedido: " + ex.Message);
+                throw new Exception("Error al insertar el DetallePedido: " + ex.Message);
             }
         }
 

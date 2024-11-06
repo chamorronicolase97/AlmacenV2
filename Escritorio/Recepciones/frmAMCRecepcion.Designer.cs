@@ -51,10 +51,9 @@
             // btnAceptar
             // 
             btnAceptar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnAceptar.Location = new Point(464, 269);
-            btnAceptar.Margin = new Padding(3, 2, 3, 2);
+            btnAceptar.Location = new Point(530, 359);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(82, 22);
+            btnAceptar.Size = new Size(94, 29);
             btnAceptar.TabIndex = 0;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = true;
@@ -63,10 +62,9 @@
             // btnCancelar
             // 
             btnCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCancelar.Location = new Point(552, 269);
-            btnCancelar.Margin = new Padding(3, 2, 3, 2);
+            btnCancelar.Location = new Point(631, 359);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(82, 22);
+            btnCancelar.Size = new Size(94, 29);
             btnCancelar.TabIndex = 1;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
@@ -76,9 +74,9 @@
             // 
             label1.Anchor = AnchorStyles.Bottom;
             label1.AutoSize = true;
-            label1.Location = new Point(44, 73);
+            label1.Location = new Point(50, 97);
             label1.Name = "label1";
-            label1.Size = new Size(81, 15);
+            label1.Size = new Size(102, 20);
             label1.TabIndex = 4;
             label1.Text = "Fecha Entrega";
             // 
@@ -86,9 +84,9 @@
             // 
             label3.Anchor = AnchorStyles.Bottom;
             label3.AutoSize = true;
-            label3.Location = new Point(53, 46);
+            label3.Location = new Point(61, 61);
             label3.Name = "label3";
-            label3.Size = new Size(70, 15);
+            label3.Size = new Size(87, 20);
             label3.TabIndex = 6;
             label3.Text = "Nro. Pedido";
             // 
@@ -96,27 +94,27 @@
             // 
             txtNroPedido.Anchor = AnchorStyles.Bottom;
             txtNroPedido.Enabled = false;
-            txtNroPedido.Location = new Point(129, 43);
-            txtNroPedido.Margin = new Padding(3, 2, 3, 2);
+            txtNroPedido.Location = new Point(147, 57);
             txtNroPedido.Name = "txtNroPedido";
             txtNroPedido.ReadOnly = true;
-            txtNroPedido.Size = new Size(98, 23);
+            txtNroPedido.Size = new Size(111, 27);
             txtNroPedido.TabIndex = 7;
             // 
             // panel1
             // 
             panel1.Controls.Add(vScrollBar1);
             panel1.Controls.Add(dgvDetalles);
-            panel1.Location = new Point(41, 108);
+            panel1.Location = new Point(47, 144);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(544, 144);
+            panel1.Size = new Size(622, 192);
             panel1.TabIndex = 8;
             // 
             // vScrollBar1
             // 
-            vScrollBar1.Location = new Point(525, 0);
+            vScrollBar1.Location = new Point(600, 0);
             vScrollBar1.Name = "vScrollBar1";
-            vScrollBar1.Size = new Size(19, 144);
+            vScrollBar1.Size = new Size(19, 192);
             vScrollBar1.TabIndex = 1;
             // 
             // dgvDetalles
@@ -125,16 +123,19 @@
             dgvDetalles.AllowUserToDeleteRows = false;
             dgvDetalles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDetalles.Location = new Point(0, 0);
+            dgvDetalles.Margin = new Padding(3, 4, 3, 4);
             dgvDetalles.Name = "dgvDetalles";
+            dgvDetalles.RowHeadersWidth = 51;
             dgvDetalles.RowTemplate.Height = 25;
-            dgvDetalles.Size = new Size(571, 137);
+            dgvDetalles.Size = new Size(653, 183);
             dgvDetalles.TabIndex = 0;
             // 
             // btnAsignar
             // 
-            btnAsignar.Location = new Point(464, 79);
+            btnAsignar.Location = new Point(530, 105);
+            btnAsignar.Margin = new Padding(3, 4, 3, 4);
             btnAsignar.Name = "btnAsignar";
-            btnAsignar.Size = new Size(121, 23);
+            btnAsignar.Size = new Size(138, 31);
             btnAsignar.TabIndex = 9;
             btnAsignar.Text = "Añadir Producto";
             btnAsignar.UseVisualStyleBackColor = true;
@@ -144,29 +145,29 @@
             // 
             dtpFechaEntrega.CustomFormat = "";
             dtpFechaEntrega.Format = DateTimePickerFormat.Short;
-            dtpFechaEntrega.Location = new Point(129, 71);
+            dtpFechaEntrega.Location = new Point(147, 95);
+            dtpFechaEntrega.Margin = new Padding(3, 4, 3, 4);
             dtpFechaEntrega.Name = "dtpFechaEntrega";
-            dtpFechaEntrega.Size = new Size(98, 23);
+            dtpFechaEntrega.Size = new Size(111, 27);
             dtpFechaEntrega.TabIndex = 10;
             // 
             // txtRecepcionID
             // 
             txtRecepcionID.Anchor = AnchorStyles.Bottom;
             txtRecepcionID.Enabled = false;
-            txtRecepcionID.Location = new Point(129, 11);
-            txtRecepcionID.Margin = new Padding(3, 2, 3, 2);
+            txtRecepcionID.Location = new Point(147, 15);
             txtRecepcionID.Name = "txtRecepcionID";
             txtRecepcionID.ReadOnly = true;
-            txtRecepcionID.Size = new Size(98, 23);
+            txtRecepcionID.Size = new Size(111, 27);
             txtRecepcionID.TabIndex = 12;
             // 
             // label2
             // 
             label2.Anchor = AnchorStyles.Bottom;
             label2.AutoSize = true;
-            label2.Location = new Point(47, 14);
+            label2.Location = new Point(54, 19);
             label2.Name = "label2";
-            label2.Size = new Size(76, 15);
+            label2.Size = new Size(97, 20);
             label2.TabIndex = 11;
             label2.Text = "Recepción ID";
             // 
@@ -174,28 +175,27 @@
             // 
             txtProveedor.Anchor = AnchorStyles.Bottom;
             txtProveedor.Enabled = false;
-            txtProveedor.Location = new Point(345, 43);
-            txtProveedor.Margin = new Padding(3, 2, 3, 2);
+            txtProveedor.Location = new Point(394, 57);
             txtProveedor.Name = "txtProveedor";
             txtProveedor.ReadOnly = true;
-            txtProveedor.Size = new Size(135, 23);
+            txtProveedor.Size = new Size(154, 27);
             txtProveedor.TabIndex = 14;
             // 
             // label4
             // 
             label4.Anchor = AnchorStyles.Bottom;
             label4.AutoSize = true;
-            label4.Location = new Point(279, 46);
+            label4.Location = new Point(319, 61);
             label4.Name = "label4";
-            label4.Size = new Size(61, 15);
+            label4.Size = new Size(77, 20);
             label4.TabIndex = 13;
             label4.Text = "Proveedor";
             // 
             // frmAMCRecepcion
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(646, 302);
+            ClientSize = new Size(738, 403);
             Controls.Add(txtProveedor);
             Controls.Add(label4);
             Controls.Add(txtRecepcionID);
@@ -209,7 +209,6 @@
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;

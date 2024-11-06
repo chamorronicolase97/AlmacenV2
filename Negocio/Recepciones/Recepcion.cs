@@ -11,15 +11,23 @@ namespace Negocio
 {
     public class Recepcion
     {
-        public async static Task<bool> Agregar(ClasePersistente clase)
+        public async static Task<ClasePersistente> Agregar(ClasePersistente clase)
         {
             var response = await Conexion.Instancia.Cliente.PostAsJsonAsync("https://localhost:7173/api/Recepcion", clase);
-            return response.IsSuccessStatusCode;
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Error al agregar el pedido: {response.ReasonPhrase}");
+            }
+
+            // Usa ReadAsStringAsync() para obtener el contenido JSON
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<ClasePersistente>(content);
+            return data;
         }
 
         public async static void Modificar(ClasePersistente clase)
         {
-            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync<ClasePersistente>($"https://localhost:7173/api/Pedido/{clase.RecepcionID}", clase);
+            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync<ClasePersistente>($"https://localhost:7173/api/Recepcion/{clase.RecepcionID}", clase);
         }
 
         public async static void Eliminar(ClasePersistente clase)
@@ -44,11 +52,25 @@ namespace Negocio
 
         }
 
-        public static bool TieneRecepcion(ClasePersistente clase)
+        public async static Task<bool> TieneRecepcion(ClasePersistente clase)
         {
-            //continuar
-            return true;
+            var response = await Conexion.Instancia.Cliente.GetAsync($"https://localhost:7173//api/Recepcion/GetByPedidoID/{clase.PedidoID}");
+
+            if(response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return false;
+            }
+            else
+            {
+
+            return false;
+            }
         }
     }
 }
+
 

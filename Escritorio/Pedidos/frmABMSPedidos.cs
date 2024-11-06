@@ -79,7 +79,8 @@ namespace Escritorio
             DialogResult = MessageBox.Show("Desea eliminar el Pedido " + Clase.PedidoID + "?", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (DialogResult == DialogResult.No) return;
 
-            if (ClaseNegocio.TieneRecepcion(Clase))
+            bool tieneRecepcion = await ClaseNegocio.TieneRecepcion(Clase);
+            if (tieneRecepcion)
             {
                 frmMostrarMensaje.MostrarMensaje($"{Pedido.NombreClase}", "El " + Pedido.NombreClase + " posee una recepción, no puede eliminarse.");
                 return;

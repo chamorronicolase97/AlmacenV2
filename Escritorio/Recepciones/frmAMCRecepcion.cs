@@ -15,12 +15,13 @@ namespace Escritorio
 {
     public partial class frmAMCRecepcion : Form
     {
+        private int _recepcionID = 0;
         public Recepcion Clase { get; set; }
         public Pedido Pedido { get; set; }
         public Proveedor Proveedor { get; set; }
         public bool Modificacion { get; set; } = false;
         protected bool _soloLectura;
-        private IEnumerable<Entidades.DetalleRecepcion>  _listadoDetalle;
+        private IEnumerable<Entidades.DetalleRecepcion> _listadoDetalle;
 
         public bool SoloLectura { get { return _soloLectura; } set { _soloLectura = value; } }
         public frmAMCRecepcion()
@@ -31,8 +32,8 @@ namespace Escritorio
 
         private void frmAMCRecepcion_Load(object sender, EventArgs e)
         {
-            if(Clase != null)
-            {               
+            if (Clase != null)
+            {
                 Proveedor = Clase.Pedido.Proveedor;
                 txtProveedor.Text = Proveedor.RazonSocial.ToString();
                 txtNroPedido.Text = Clase.PedidoID.ToString();
@@ -43,25 +44,25 @@ namespace Escritorio
                 {
                     dtpFechaEntrega.Enabled = false;
                 }
+                CargarGrillaDetalles();
             }
             else
             {
                 txtProveedor.Text = Proveedor.RazonSocial.ToString();
                 txtNroPedido.Text = Pedido.PedidoID.ToString();
-                txtRecepcionID.Text = Clase.RecepcionID.ToString();
+                txtRecepcionID.Text = _recepcionID.ToString();
+                
             }
             txtProveedor.ReadOnly = true;
             txtNroPedido.ReadOnly = true;
-            txtRecepcionID.ReadOnly = true;
-
-            CargarGrillaDetalles();
+            txtRecepcionID.ReadOnly = true;            
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
-        {       
-            if(Clase == null)
+        {
+            if (Clase == null)
             {
-                if(Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
+                if (Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
                 {
                     if (dgvDetalles.Rows.Count != 0)
                     {
@@ -96,7 +97,7 @@ namespace Escritorio
             {
                 Clase.Estado = Negocio.PedidoEstado.EnEdicion;
                 ClaseNegocio.Agregar(Clase);
-                
+
             }
 
             //actualizacion stock
@@ -127,7 +128,7 @@ namespace Escritorio
             {
                 if (MessageBox.Show("¿Desea finalizar la recepción?", "Recepcion", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    Clase.Estado = Negocio.PedidoEstado.Confirmado;
+                    Clase.Estado = Negocio.PedidoEstado.Confirmado;                    
                 }
             }
 
@@ -145,7 +146,8 @@ namespace Escritorio
                     Pedido = Pedido,
                     Estado = Negocio.PedidoEstado.EnEdicion
                 };
-                await ClaseNegocio.Agregar(Clase);
+               Clase =  await ClaseNegocio.Agregar(Clase);
+                _recepcionID = Clase.RecepcionID;
             }
 
             frmAMCDetalleRecepcion f = new frmAMCDetalleRecepcion();
@@ -159,6 +161,7 @@ namespace Escritorio
 
         private async void CargarGrillaDetalles()
         {
+
             _listadoDetalle = await Negocio.DetalleRecepcion.ListarTodos(Clase.RecepcionID);
 
             var recepciones = _listadoDetalle.Select(p => new

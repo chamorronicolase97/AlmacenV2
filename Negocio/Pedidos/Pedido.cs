@@ -54,10 +54,23 @@ namespace Negocio
 
         }
 
-        public static bool TieneRecepcion(ClasePersistente clase)
+        public async static Task<bool> TieneRecepcion(ClasePersistente clase)
         {
-            //continuar
-            return true;
+            var response = await Conexion.Instancia.Cliente.GetAsync($"https://localhost:7173//api/Recepcion/GetByPedidoID/{clase.PedidoID}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return false;
+            }
+            else
+            {
+
+                return false;
+            }
         }
     }
 }

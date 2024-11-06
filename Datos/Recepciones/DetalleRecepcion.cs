@@ -10,21 +10,47 @@ namespace Datos
 {
     public class DetalleRecepcion : AlmacenContext
     {
-        const string Tabla = "dbo.Recepciones";
+        const string Tabla = "dbo.DetallesRecepciones";
         public DetalleRecepcion() : base() { }
 
         public void Insertar(ClasePersistente clase)
         {
             try
             {
-                base.Recepciones.Attach(clase.Recepcion);
-                base.Productos.Attach(clase.Producto);
+                // Adjunta solo si no está siendo rastreado ya en el contexto
+                if (!base.Pedidos.Local.Any(p => p.PedidoID == clase.Recepcion.PedidoID))
+                {
+                    base.Pedidos.Attach(clase.Recepcion.Pedido);
+                }
+
+                if (!base.Proveedores.Local.Any(p => p.ProveedorID == clase.Producto.ProveedorID))
+                {
+                    base.Proveedores.Attach(clase.Producto.Proveedor);
+                }
+
+                if (!base.Recepciones.Local.Any(p => p.RecepcionID == clase.Recepcion.RecepcionID))
+                {
+                    base.Recepciones.Attach(clase.Recepcion);
+                }
+                var productoExistente = base.Productos.Find(clase.Producto.ProductoID);
+                if (productoExistente != null)
+                {
+                    clase.Producto = productoExistente;
+                }
+                else
+                {
+                    base.Productos.Attach(clase.Producto);
+                }
+
+
+                // Agregar la entidad principal (DetalleRecepcion)
                 base.DetallesRecepciones.Add(clase);
                 base.SaveChanges();
+
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al insertar el pedido: " + ex.Message);
+                throw new Exception("Error al insertar el DetalleRecepcion: " + ex.Message);
             }
         }
 

@@ -58,6 +58,11 @@ namespace Datos
         {
             return base.Recepciones.Include(u => u.Estado).Include(u => u.Pedido).ThenInclude(p => p.Proveedor).FirstOrDefault(u => u.RecepcionID == ID);
         }
+
+        public ClasePersistente ConsultarPorPedido(int PedidoID)
+        {
+            return  base.Recepciones.Include(u => u.Estado).Include(u => u.Pedido).ThenInclude(p => p.Proveedor).FirstOrDefault(u => u.PedidoID == PedidoID);          
+        }
     }
 }
 
