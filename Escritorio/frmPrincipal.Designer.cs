@@ -62,19 +62,19 @@
             // cambiarUsuarioToolStripMenuItem
             // 
             cambiarUsuarioToolStripMenuItem.Name = "cambiarUsuarioToolStripMenuItem";
-            cambiarUsuarioToolStripMenuItem.Size = new Size(162, 22);
+            cambiarUsuarioToolStripMenuItem.Size = new Size(180, 22);
             cambiarUsuarioToolStripMenuItem.Text = "Cambiar Usuario";
             // 
             // reiniciarToolStripMenuItem
             // 
             reiniciarToolStripMenuItem.Name = "reiniciarToolStripMenuItem";
-            reiniciarToolStripMenuItem.Size = new Size(162, 22);
+            reiniciarToolStripMenuItem.Size = new Size(180, 22);
             reiniciarToolStripMenuItem.Text = "Reiniciar";
             // 
             // salirToolStripMenuItem
             // 
             salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            salirToolStripMenuItem.Size = new Size(162, 22);
+            salirToolStripMenuItem.Size = new Size(180, 22);
             salirToolStripMenuItem.Text = "Salir";
             // 
             // depositoToolStripMenuItem
@@ -87,7 +87,7 @@
             // recepciónToolStripMenuItem
             // 
             recepciónToolStripMenuItem.Name = "recepciónToolStripMenuItem";
-            recepciónToolStripMenuItem.Size = new Size(180, 22);
+            recepciónToolStripMenuItem.Size = new Size(129, 22);
             recepciónToolStripMenuItem.Text = "Recepción";
             recepciónToolStripMenuItem.Click += recepciónToolStripMenuItem_Click;
             // 
@@ -101,7 +101,7 @@
             // pedidosToolStripMenuItem
             // 
             pedidosToolStripMenuItem.Name = "pedidosToolStripMenuItem";
-            pedidosToolStripMenuItem.Size = new Size(180, 22);
+            pedidosToolStripMenuItem.Size = new Size(116, 22);
             pedidosToolStripMenuItem.Text = "Pedidos";
             pedidosToolStripMenuItem.Click += pedidosToolStripMenuItem_Click;
             // 
@@ -164,21 +164,21 @@
             // gruposToolStripMenuItem
             // 
             gruposToolStripMenuItem.Name = "gruposToolStripMenuItem";
-            gruposToolStripMenuItem.Size = new Size(180, 22);
+            gruposToolStripMenuItem.Size = new Size(122, 22);
             gruposToolStripMenuItem.Text = "Grupos";
             gruposToolStripMenuItem.Click += gruposToolStripMenuItem_Click;
             // 
             // usuariosToolStripMenuItem
             // 
             usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
-            usuariosToolStripMenuItem.Size = new Size(180, 22);
+            usuariosToolStripMenuItem.Size = new Size(122, 22);
             usuariosToolStripMenuItem.Text = "Usuarios";
             usuariosToolStripMenuItem.Click += usuariosToolStripMenuItem_Click;
             // 
             // permisosToolStripMenuItem
             // 
             permisosToolStripMenuItem.Name = "permisosToolStripMenuItem";
-            permisosToolStripMenuItem.Size = new Size(180, 22);
+            permisosToolStripMenuItem.Size = new Size(122, 22);
             permisosToolStripMenuItem.Text = "Permisos";
             permisosToolStripMenuItem.Click += permisosToolStripMenuItem_Click;
             // 

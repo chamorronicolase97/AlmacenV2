@@ -54,5 +54,6 @@ namespace Escritorio
             frmABMSPermisos f = new frmABMSPermisos();
             f.Show();
         }
+
     }
 }
