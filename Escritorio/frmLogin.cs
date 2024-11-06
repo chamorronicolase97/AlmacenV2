@@ -23,23 +23,7 @@ namespace Escritorio
 
         private async void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (!ValidarAntesDeAceptar()) return;
-
-            iLogin login = new iLogin();
-            login.user = txtUsuario.Text;
-            login.password = txtPassword.Text;
-
-            Usuario = await Negocio.Usuario.Ingresar(login);
-
-            if (Usuario != null)
-            {
-                DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                MessageBox.Show("Usuario No encontrado.", "Iniciar Sesión", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
-                return;
-            }
+            CargarGrillaConCargando();
 
         }
         private bool ValidarAntesDeAceptar()
@@ -57,6 +41,40 @@ namespace Escritorio
             }
 
             return true;
+        }
+
+        private async Task Ingresar()
+        {
+            if (!ValidarAntesDeAceptar()) return;
+
+            iLogin login = new iLogin();
+            login.user = txtUsuario.Text;
+            login.password = txtPassword.Text;
+
+            Usuario = await Negocio.Usuario.Ingresar(login);
+
+            if (Usuario != null)
+            {
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                MessageBox.Show("Usuario No encontrado.", "Iniciar Sesión", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return;
+            }
+        }
+
+        private async void CargarGrillaConCargando()
+        {
+            using (var frmCargando = new frmCargando())
+            {
+                frmCargando.Show(); // Muestra el formulario de carga
+
+                // Espera a que CargarGrilla complete la carga de datos
+                await Ingresar();
+
+                // El formulario `frmCargando` se cerrará automáticamente al salir del bloque `using`
+            }
         }
 
     }
