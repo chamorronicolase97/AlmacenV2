@@ -87,7 +87,7 @@ namespace Escritorio
             f.Proveedor = proveedor;
             f.SoloLectura = false;
 
-            f.ShowDialog();
+            f.ShowDialog(this);
             if (f.DialogResult == DialogResult.OK) CargarGrilla();
         }
 
@@ -118,16 +118,16 @@ namespace Escritorio
 
             ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["RecepcionID"].Value));
 
-            if (Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.Confirmado.PedidoEstadoID || Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.Cancelado.PedidoEstadoID)
+            if (Clase.Estado.PedidoEstadoID != Negocio.PedidoEstado.Confirmado.PedidoEstadoID)
             {
-                frmMostrarMensaje.MostrarMensaje("Recepciones", "Las recepciones deben estar en Estado de Edición para ser modificadas.");
+                frmMostrarMensaje.MostrarMensaje("Recepciones", "Las recepciones deben estar en Estado Controlado  para ser modificadas.");
                 return;
             }
 
             frmAMCRecepcion f = new frmAMCRecepcion();
             f.Clase = Clase;
             f.Modificacion = true;
-            f.ShowDialog();
+            f.ShowDialog(this);
             if (f.DialogResult == DialogResult.OK) CargarGrilla();
         }
 

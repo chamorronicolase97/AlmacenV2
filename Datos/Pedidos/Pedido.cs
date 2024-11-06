@@ -30,6 +30,8 @@ namespace Datos
 
         public void Modificar(ClasePersistente clase)
         {
+            base.PedidosEstados.Attach(clase.PedidoEstado);
+            base.Proveedores.Attach(clase.Proveedor);
             base.Pedidos.Update(clase);
             base.SaveChanges();
         }

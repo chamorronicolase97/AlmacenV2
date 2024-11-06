@@ -83,7 +83,7 @@ namespace Escritorio
         {
             frmAMCPedido f = new frmAMCPedido();
             f.SoloLectura = false;
-            f.ShowDialog();
+            f.ShowDialog(this);
             if (f.DialogResult == DialogResult.OK) CargarGrilla();
         }
 
@@ -118,7 +118,7 @@ namespace Escritorio
             frmAMC f = new frmAMC();
             f.Clase = Clase;
             f.Modificacion = true;
-            f.Show();
+            f.ShowDialog(this);
             if (f.DialogResult == DialogResult.OK) CargarGrilla();
         }
 
@@ -133,7 +133,7 @@ namespace Escritorio
             Pedido = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["PedidoID"].Value));
 
 
-            if (Pedido.PedidoEstado != Negocio.PedidoEstado.Confirmado)
+            if (Pedido.PedidoEstado.PedidoEstadoID != Negocio.PedidoEstado.Confirmado.PedidoEstadoID)
             {
                 frmMostrarMensaje.MostrarMensaje($"Seleccionar", "Debe seleccionar un Pedido en estado Confirmado.");
                 return;

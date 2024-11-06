@@ -85,20 +85,7 @@ namespace Escritorio
         {
             if (!Validar()) return;
 
-            Clase.FechaEntrega = dtpFechaEntrega.Value;
-
-            if (Modificacion)
-            {
-                ClaseNegocio.Modificar(Clase);
-                this.DialogResult = DialogResult.OK;
-            }
-            else
-
-            {
-                Clase.Estado = Negocio.PedidoEstado.EnEdicion;
-                ClaseNegocio.Agregar(Clase);
-
-            }
+            Clase.FechaEntrega = dtpFechaEntrega.Value;            
 
             //actualizacion stock
             if (Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.Confirmado.PedidoEstadoID)
@@ -112,6 +99,13 @@ namespace Escritorio
                     Negocio.Producto.Modificar(rec.Producto);
                 }
             }
+
+            Clase.Estado = Negocio.PedidoEstado.Recibido;
+            Clase.EstadoID = Negocio.PedidoEstado.Recibido.PedidoEstadoID;
+            ClaseNegocio.Modificar(Clase);
+            Clase.Pedido.PedidoEstado = Negocio.PedidoEstado.Recibido;
+            Clase.Pedido.PedidoEstadoID = Negocio.PedidoEstado.Recibido.PedidoEstadoID;
+            Negocio.Pedido.Modificar(Clase.Pedido);
 
             this.DialogResult = DialogResult.OK;
         }
