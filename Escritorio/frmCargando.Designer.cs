@@ -56,7 +56,9 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmCargando";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Cargando...";
+            TopMost = true;
             ResumeLayout(false);
         }
 

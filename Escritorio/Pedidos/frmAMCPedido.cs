@@ -169,10 +169,23 @@ namespace Escritorio
             f.FiltroProveedor = _proveedor;
 
             f.ShowDialog(this);
-            CargarGrillaDetalles();
+            CargarGrillaConCargando();
         }
 
-        private async void CargarGrillaDetalles()
+        private async void CargarGrillaConCargando()
+        {
+            using (var frmCargando = new frmCargando())
+            {
+                frmCargando.Show(); // Muestra el formulario de carga
+
+                // Espera a que CargarGrilla complete la carga de datos
+                await CargarGrillaDetalles();
+
+                // El formulario `frmCargando` se cerrará automáticamente al salir del bloque `using`
+            }
+        }
+
+        private async Task CargarGrillaDetalles()
         {
             txtNroPedido.Text = _nroPedido.ToString();
             _listadoDetalle = await Negocio.DetallePedido.ListarTodos(_nroPedido);
@@ -193,7 +206,7 @@ namespace Escritorio
             if (_proveedor != null) { txtProveedor.Text = _proveedor.RazonSocial.ToString(); }
             else { txtProveedor.Text = ""; }
 
-            CargarGrillaDetalles();
+            CargarGrillaConCargando();
 
             if (Modificacion)
             {

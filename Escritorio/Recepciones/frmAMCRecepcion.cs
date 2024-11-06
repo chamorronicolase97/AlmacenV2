@@ -44,7 +44,7 @@ namespace Escritorio
                 {
                     dtpFechaEntrega.Enabled = false;
                 }
-                CargarGrillaDetalles();
+                CargarGrillaConCargando();
             }
             else
             {
@@ -149,11 +149,24 @@ namespace Escritorio
             f.Recepcion = Clase;
             f.ShowDialog(this);
 
-            CargarGrillaDetalles();
+            CargarGrillaConCargando();
 
         }
 
-        private async void CargarGrillaDetalles()
+        private async void CargarGrillaConCargando()
+        {
+            using (var frmCargando = new frmCargando())
+            {
+                frmCargando.Show(); // Muestra el formulario de carga
+
+                // Espera a que CargarGrilla complete la carga de datos
+                await CargarGrillaDetalles();
+
+                // El formulario `frmCargando` se cerrará automáticamente al salir del bloque `using`
+            }
+        }
+
+        private async Task CargarGrillaDetalles()
         {
 
             _listadoDetalle = await Negocio.DetalleRecepcion.ListarTodos(Clase.RecepcionID);

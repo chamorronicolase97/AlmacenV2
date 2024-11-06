@@ -38,6 +38,6 @@ namespace Escritorio
             {
                 tmr.Enabled = false;
             }
-        }      
+        }
     }
 }
