@@ -33,6 +33,17 @@
             dgvDatos = new DataGridView();
             splitContainer1 = new SplitContainer();
             txtFiltro = new TextBox();
+            gbEstados = new GroupBox();
+            pnlCancelado = new Panel();
+            pnlControlado = new Panel();
+            label5 = new Label();
+            label4 = new Label();
+            pnlRecibido = new Panel();
+            label3 = new Label();
+            pnlConfirmado = new Panel();
+            label2 = new Label();
+            pnlEnEdicion = new Panel();
+            label1 = new Label();
             pnlBotones = new Panel();
             btnConsultar = new Button();
             btnSeleccionar = new Button();
@@ -45,6 +56,7 @@
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            gbEstados.SuspendLayout();
             pnlBotones.SuspendLayout();
             SuspendLayout();
             // 
@@ -60,7 +72,7 @@
             dgvDatos.ReadOnly = true;
             dgvDatos.RowHeadersWidth = 51;
             dgvDatos.RowTemplate.Height = 29;
-            dgvDatos.Size = new Size(535, 290);
+            dgvDatos.Size = new Size(535, 291);
             dgvDatos.TabIndex = 0;
             // 
             // splitContainer1
@@ -77,10 +89,11 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(gbEstados);
             splitContainer1.Panel2.Controls.Add(pnlBotones);
             splitContainer1.Panel2.Controls.Add(dgvDatos);
-            splitContainer1.Size = new Size(584, 361);
-            splitContainer1.SplitterDistance = 63;
+            splitContainer1.Size = new Size(584, 435);
+            splitContainer1.SplitterDistance = 75;
             splitContainer1.SplitterWidth = 3;
             splitContainer1.TabIndex = 1;
             // 
@@ -92,6 +105,106 @@
             txtFiltro.Size = new Size(165, 23);
             txtFiltro.TabIndex = 3;
             txtFiltro.TextChanged += txtFiltro_TextChanged;
+            // 
+            // gbEstados
+            // 
+            gbEstados.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            gbEstados.Controls.Add(pnlCancelado);
+            gbEstados.Controls.Add(pnlControlado);
+            gbEstados.Controls.Add(label5);
+            gbEstados.Controls.Add(label4);
+            gbEstados.Controls.Add(pnlRecibido);
+            gbEstados.Controls.Add(label3);
+            gbEstados.Controls.Add(pnlConfirmado);
+            gbEstados.Controls.Add(label2);
+            gbEstados.Controls.Add(pnlEnEdicion);
+            gbEstados.Controls.Add(label1);
+            gbEstados.Location = new Point(12, 301);
+            gbEstados.Name = "gbEstados";
+            gbEstados.Size = new Size(560, 53);
+            gbEstados.TabIndex = 0;
+            gbEstados.TabStop = false;
+            gbEstados.Text = "Estados";
+            // 
+            // pnlCancelado
+            // 
+            pnlCancelado.Location = new Point(444, 19);
+            pnlCancelado.Name = "pnlCancelado";
+            pnlCancelado.Size = new Size(14, 15);
+            pnlCancelado.TabIndex = 23;
+            // 
+            // pnlControlado
+            // 
+            pnlControlado.Location = new Point(331, 19);
+            pnlControlado.Name = "pnlControlado";
+            pnlControlado.Size = new Size(14, 15);
+            pnlControlado.TabIndex = 21;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(464, 19);
+            label5.Name = "label5";
+            label5.Size = new Size(63, 15);
+            label5.TabIndex = 22;
+            label5.Text = "Cancelado";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(351, 19);
+            label4.Name = "label4";
+            label4.Size = new Size(67, 15);
+            label4.TabIndex = 20;
+            label4.Text = "Controlado";
+            // 
+            // pnlRecibido
+            // 
+            pnlRecibido.Location = new Point(225, 19);
+            pnlRecibido.Name = "pnlRecibido";
+            pnlRecibido.Size = new Size(14, 15);
+            pnlRecibido.TabIndex = 19;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(245, 19);
+            label3.Name = "label3";
+            label3.Size = new Size(53, 15);
+            label3.TabIndex = 18;
+            label3.Text = "Recibido";
+            // 
+            // pnlConfirmado
+            // 
+            pnlConfirmado.Location = new Point(117, 19);
+            pnlConfirmado.Name = "pnlConfirmado";
+            pnlConfirmado.Size = new Size(14, 15);
+            pnlConfirmado.TabIndex = 17;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(137, 19);
+            label2.Name = "label2";
+            label2.Size = new Size(71, 15);
+            label2.TabIndex = 16;
+            label2.Text = "Confirmado";
+            // 
+            // pnlEnEdicion
+            // 
+            pnlEnEdicion.Location = new Point(10, 19);
+            pnlEnEdicion.Name = "pnlEnEdicion";
+            pnlEnEdicion.Size = new Size(14, 15);
+            pnlEnEdicion.TabIndex = 15;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(30, 19);
+            label1.Name = "label1";
+            label1.Size = new Size(62, 15);
+            label1.TabIndex = 14;
+            label1.Text = "En Edición";
             // 
             // pnlBotones
             // 
@@ -171,7 +284,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(584, 361);
+            ClientSize = new Size(584, 435);
             Controls.Add(splitContainer1);
             Margin = new Padding(3, 2, 3, 2);
             MinimumSize = new Size(600, 400);
@@ -185,6 +298,8 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            gbEstados.ResumeLayout(false);
+            gbEstados.PerformLayout();
             pnlBotones.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -201,5 +316,16 @@
         private Button btnSeleccionar;
         private ToolTip toolTip1;
         private Button btnConsultar;
+        private GroupBox gbEstados;
+        private Panel pnlEnEdicion;
+        private Label label1;
+        private Panel pnlCancelado;
+        private Panel pnlControlado;
+        private Label label5;
+        private Label label4;
+        private Panel pnlRecibido;
+        private Label label3;
+        private Panel pnlConfirmado;
+        private Label label2;
     }
 }

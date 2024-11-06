@@ -18,9 +18,17 @@ namespace Escritorio
 {
     public partial class frmABMSPedidos : Form
     {
-        private BindingSource bindingSource; 
+        private BindingSource bindingSource;
         private bool _modoSeleccion;
         private IEnumerable<Entidades.Pedido> _listado;
+
+        #region Colores
+        private Color colorEnEdicion = Color.LightBlue;
+        private Color colorConfirmado = Color.LimeGreen;
+        private Color colorRecibido = Color.DarkOliveGreen;
+        private Color colorControlado = Color.Orange;
+        private Color colorCancelado = Color.LightSalmon;
+        #endregion
         public ClasePersistente Pedido { get; set; }
         public bool ModoSeleccion { get { return _modoSeleccion; } set { _modoSeleccion = value; } }
 
@@ -32,8 +40,13 @@ namespace Escritorio
         }
 
         private void frmABMSPedidos_Load(object sender, EventArgs e)
-
         {
+            pnlEnEdicion.BackColor = colorEnEdicion;
+            pnlConfirmado.BackColor = colorConfirmado;
+            pnlRecibido.BackColor = colorRecibido;
+            pnlControlado.BackColor = colorControlado;
+            pnlCancelado.BackColor = colorCancelado;
+
             if (_modoSeleccion)
             {
                 btnCrear.Enabled = false;
@@ -51,15 +64,19 @@ namespace Escritorio
             {
                 p.PedidoID,
                 p.Proveedor.RazonSocial,
-                p.FechaEntrega
+                p.FechaEntrega,
+                EstadoID = p.PedidoEstado?.PedidoEstadoID,
+                Estado = p.PedidoEstado?.Descripcion
             }).ToList();
             bindingSource.DataSource = pedidosview;
             dgvDatos.DataSource = bindingSource;
 
             dgvDatos.Columns["RazonSocial"].HeaderText = "Razón Social";
             dgvDatos.Columns["FechaEntrega"].HeaderText = "Fecha Entrega";
+            dgvDatos.Columns["EstadoID"].Visible = false;
 
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            PintarFilas();
         }
 
         private void btnCrear_Click(object sender, EventArgs e)
@@ -114,6 +131,14 @@ namespace Escritorio
             }
 
             Pedido = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["PedidoID"].Value));
+
+
+            if (Pedido.PedidoEstado != Negocio.PedidoEstado.Confirmado)
+            {
+                frmMostrarMensaje.MostrarMensaje($"Seleccionar", "Debe seleccionar un Pedido en estado Confirmado.");
+                return;
+            }
+
             this.DialogResult = DialogResult.OK;
         }
 
@@ -145,6 +170,47 @@ namespace Escritorio
 
             bindingSource.DataSource = _listado;
             dgvDatos.DataSource = bindingSource;
+        }
+
+        private void PintarFilas()
+        {
+            foreach (DataGridViewRow row in dgvDatos.Rows)
+            {
+                if (row.Cells["Estado"].Value != DBNull.Value)
+                {
+                    int estadoID = Convert.ToInt32(row.Cells["EstadoID"].Value);
+
+                    switch (estadoID)
+                    {
+                        case 1:
+                            row.DefaultCellStyle.BackColor = colorEnEdicion;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                            break;
+                        case 2:
+                            row.DefaultCellStyle.BackColor = colorConfirmado;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                            break;
+                        case 3:
+                            row.DefaultCellStyle.BackColor = colorCancelado;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                            break;
+                        case 4:
+                            row.DefaultCellStyle.BackColor = colorRecibido;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                            break;
+                        case 5:
+                            row.DefaultCellStyle.BackColor = colorControlado;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                            break;
+                        default:
+                            // Opcional: Color para valores no reconocidos
+                            row.DefaultCellStyle.BackColor = Color.White;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                            break;
+                    }
+                }
+            }
+
         }
 
     }
