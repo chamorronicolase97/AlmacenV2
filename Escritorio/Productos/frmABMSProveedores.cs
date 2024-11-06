@@ -39,10 +39,23 @@ namespace Escritorio
                 btnModificar.Enabled = false;
                 btnBorrar.Enabled = false;
             }
-            CargarGrilla();
+            CargarGrillaConCargando();
         }
 
-        private async void CargarGrilla()
+        private async void CargarGrillaConCargando()
+        {
+            using (var frmCargando = new frmCargando())
+            {
+                frmCargando.Show(); // Muestra el formulario de carga
+
+                // Espera a que CargarGrilla complete la carga de datos
+                await CargarGrilla();
+
+                // El formulario `frmCargando` se cerrará automáticamente al salir del bloque `using`
+            }
+        }
+
+        private async Task CargarGrilla()
         {
             var datos = await ClaseNegocio.ListarTodos();
 
@@ -62,7 +75,7 @@ namespace Escritorio
             frmAMC f = new frmAMC();
             f.SoloLectura = false;
             f.ShowDialog();
-            if (f.DialogResult == DialogResult.OK) CargarGrilla();
+            if (f.DialogResult == DialogResult.OK) CargarGrillaConCargando();
         }
 
         private async void btnBorrar_Click(object sender, EventArgs e)
@@ -84,7 +97,7 @@ namespace Escritorio
 
             frmMostrarMensaje.MostrarMensaje($"{ClasePersistente.NombreClase}", "Baja de " + ClasePersistente.NombreClase + " exitosa.");
 
-            CargarGrilla();
+            CargarGrillaConCargando();
         }
 
         private async void btnModificar_Click(object sender, EventArgs e)
@@ -97,7 +110,7 @@ namespace Escritorio
             f.Clase = Clase;
             f.Modificacion = true;
             f.ShowDialog();
-            if (f.DialogResult == DialogResult.OK) CargarGrilla();
+            if (f.DialogResult == DialogResult.OK) CargarGrillaConCargando();
         }
 
         private async void btnSeleccionar_Click(object sender, EventArgs e)

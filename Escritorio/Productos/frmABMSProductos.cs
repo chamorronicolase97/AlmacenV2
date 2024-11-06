@@ -77,12 +77,25 @@ namespace Escritorio
                 btnBorrar.Enabled = false;
             }
 
-            CargarGrilla();
+            CargarGrillaConCargando();
 
             formularioCargado = true;
         }
 
-        private async void CargarGrilla()
+        private async void CargarGrillaConCargando()
+        {
+            using (var frmCargando = new frmCargando())
+            {
+                frmCargando.Show(); // Muestra el formulario de carga
+
+                // Espera a que CargarGrilla complete la carga de datos
+                await CargarGrilla();
+
+                // El formulario `frmCargando` se cerrará automáticamente al salir del bloque `using`
+            }
+        }
+
+        private async Task CargarGrilla()
         {
             var listado = await ClaseNegocio.ListarTodos();           
             var productosview = listado.Select(p => new { p.ProductoID, p.Descripcion, p.Costo, p.CodigoDeBarra, p.Proveedor.RazonSocial, p.ProveedorID, Categoria = p.Categoria.Descripcion, p.CategoriaID }).ToList();
@@ -112,7 +125,7 @@ namespace Escritorio
             frmAMC f = new frmAMC();
             f.SoloLectura = false;
             f.ShowDialog();
-            if (f.DialogResult == DialogResult.OK) CargarGrilla();
+            if (f.DialogResult == DialogResult.OK) CargarGrillaConCargando();
         }
 
         private async void btnBorrar_Click(object sender, EventArgs e)
@@ -127,7 +140,7 @@ namespace Escritorio
 
             frmMostrarMensaje.MostrarMensaje($"{Producto.NombreClase}", "Baja de " + Producto.NombreClase + " exitosa.");
 
-            CargarGrilla();
+            CargarGrillaConCargando();
 
         }
 
@@ -141,7 +154,7 @@ namespace Escritorio
             f.Clase = Clase;
             f.Modificacion = true;
             f.ShowDialog();
-            if (f.DialogResult == DialogResult.OK) CargarGrilla();
+            if (f.DialogResult == DialogResult.OK) CargarGrillaConCargando();
         }
 
         private async void btnSeleccionar_Click(object sender, EventArgs e)
@@ -193,11 +206,11 @@ namespace Escritorio
             if (dgvDatos.CurrentRow != null)
             {
                 ClasePersistente _producto = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["ProductoID"].Value));
-                CargarGrilla();
+                CargarGrillaConCargando();
             }
             else
             {
-                CargarGrilla();
+                CargarGrillaConCargando();
             }
         }
 
