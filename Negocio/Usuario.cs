@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Entidades;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using ClasePersistente = Entidades.Usuario;
@@ -38,6 +39,32 @@ namespace Negocio
             var data = JsonConvert.DeserializeObject<ClasePersistente>(response);
             return data;
 
+        }
+
+        public async static Task<ClasePersistente> Ingresar(iLogin login)
+        {
+            var response = await Conexion.Instancia.Cliente.PostAsJsonAsync($"https://localhost:7173/Ingresar", login);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            // Usa ReadAsStringAsync() para obtener el contenido JSON
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<ClasePersistente>(content);
+            return data;
+
+        }
+
+        public async static Task<bool> ExisteUsuario(string CodUsuario)
+        {
+            var response = Conexion.Instancia.Cliente.GetAsync($"https://localhost:7173/api/BuscarPorUsuario/{CodUsuario}");
+
+            if (response.Result.StatusCode == System.Net.HttpStatusCode.NotFound) return true;
+
+            return false;
+           
         }
 
         public static bool EsVacio(int ID)

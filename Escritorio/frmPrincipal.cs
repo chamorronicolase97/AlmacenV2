@@ -2,6 +2,8 @@ namespace Escritorio
 {
     public partial class frmPrincipal : Form
     {
+        public Entidades.Usuario Usuario { get; set; }
+
         public frmPrincipal()
         {
             InitializeComponent();
@@ -55,5 +57,44 @@ namespace Escritorio
             f.Show();
         }
 
+        private void frmPrincipal_Load(object sender, EventArgs e)
+        {
+            frmLogin f = new frmLogin();
+            f.ShowDialog();
+            if (f.DialogResult == DialogResult.OK)
+            {
+                this.Show();
+                Usuario = f.Usuario;
+                lblBienvenido.Text = lblBienvenido.Text + " " + Usuario.NombreApellido;
+            }
+            else
+            {
+                this.Close();
+            }
+        }
+
+        private void cambiarUsuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmLogin f = new frmLogin();
+            f.ShowDialog();
+            if (f.DialogResult == DialogResult.OK)
+            {
+                this.Show();
+            }
+            else
+            {
+                this.Close();
+            }
+        }
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void reiniciarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Load += frmPrincipal_Load;
+        }
     }
 }

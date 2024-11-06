@@ -1,4 +1,5 @@
 ﻿using Datos;
+using Entidades;
 using Microsoft.AspNetCore.Mvc;
 using Clase = Entidades.Usuario;
 
@@ -13,7 +14,7 @@ namespace Web
         public UsuarioController()
 
         {
-            _Usuario = new Usuario();
+            _Usuario = new Datos.Usuario();
         }
 
         [HttpGet(Name = "ListarUsuarios")]
@@ -25,26 +26,36 @@ namespace Web
         [HttpGet("{ID}")]
         public ActionResult<Clase> GetbyID(int ID)
         {
-            var grupo = _Usuario.Consultar(ID);
+            var usuario = _Usuario.Consultar(ID);
 
-            if (grupo == null) return NotFound();
+            if (usuario == null) return NotFound();
 
-            return grupo;
+            return usuario;
+        }
+
+        [HttpPost("/Ingresar")]
+        public ActionResult<Clase> Ingresar(iLogin login)
+        {
+            var usuario = _Usuario.Ingresar(login.user, login.password);
+
+            if (usuario == null) return NotFound();
+
+            return usuario;
         }
 
         [HttpPost]
-        public ActionResult<Clase> Create(Clase proveedor)
+        public ActionResult<Clase> Create(Clase usuario)
         {
-            _Usuario.Insertar(proveedor);
+            _Usuario.Insertar(usuario);
             return CreatedAtAction(nameof(GetbyID), null);
         }
 
         [HttpPut("{ID}")]
-        public ActionResult Update(int ID, Clase proveedor)
+        public ActionResult Update(int ID, Clase usuario)
         {
-            if (ID != proveedor.UsuarioID) return BadRequest();
+            if (ID != usuario.UsuarioID) return BadRequest();
 
-            _Usuario.Modificar(proveedor);
+            _Usuario.Modificar(usuario);
 
             return NoContent();
         }
@@ -52,13 +63,23 @@ namespace Web
         [HttpDelete("{ID}")]
         public ActionResult<Clase> Delete(int ID)
         {
-            var grupo = _Usuario.Consultar(ID);
+            var usuario = _Usuario.Consultar(ID);
 
-            if (grupo == null) return NotFound();
+            if (usuario == null) return NotFound();
 
-            _Usuario.Eliminar(grupo);
+            _Usuario.Eliminar(usuario);
 
-            return grupo;
+            return usuario;
+        }
+
+        [HttpGet("BuscarPorUsuario/{CodUsuario}")]
+        public ActionResult<Clase> GetByUsuario(string CodUsuario)
+        {
+            var usuario = _Usuario.Consultar(CodUsuario);
+
+            if (usuario == null) return NotFound();
+
+            return usuario;
         }
 
     }

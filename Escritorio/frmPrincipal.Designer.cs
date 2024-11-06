@@ -49,7 +49,11 @@
             usuariosToolStripMenuItem = new ToolStripMenuItem();
             permisosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1 = new MenuStrip();
+            panel1 = new Panel();
+            lblBienvenido = new Label();
+            monthCalendar1 = new MonthCalendar();
             menuStrip1.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // principalToolStripMenuItem
@@ -64,18 +68,21 @@
             cambiarUsuarioToolStripMenuItem.Name = "cambiarUsuarioToolStripMenuItem";
             cambiarUsuarioToolStripMenuItem.Size = new Size(180, 22);
             cambiarUsuarioToolStripMenuItem.Text = "Cambiar Usuario";
+            cambiarUsuarioToolStripMenuItem.Click += cambiarUsuarioToolStripMenuItem_Click;
             // 
             // reiniciarToolStripMenuItem
             // 
             reiniciarToolStripMenuItem.Name = "reiniciarToolStripMenuItem";
             reiniciarToolStripMenuItem.Size = new Size(180, 22);
             reiniciarToolStripMenuItem.Text = "Reiniciar";
+            reiniciarToolStripMenuItem.Click += reiniciarToolStripMenuItem_Click;
             // 
             // salirToolStripMenuItem
             // 
             salirToolStripMenuItem.Name = "salirToolStripMenuItem";
             salirToolStripMenuItem.Size = new Size(180, 22);
             salirToolStripMenuItem.Text = "Salir";
+            salirToolStripMenuItem.Click += salirToolStripMenuItem_Click;
             // 
             // depositoToolStripMenuItem
             // 
@@ -193,16 +200,51 @@
             menuStrip1.TabIndex = 1;
             menuStrip1.Text = "menuStrip1";
             // 
+            // panel1
+            // 
+            panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            panel1.BackColor = SystemColors.ActiveCaption;
+            panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(lblBienvenido);
+            panel1.Location = new Point(552, 179);
+            panel1.Margin = new Padding(3, 2, 3, 2);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(248, 100);
+            panel1.TabIndex = 4;
+            // 
+            // lblBienvenido
+            // 
+            lblBienvenido.AutoSize = true;
+            lblBienvenido.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            lblBienvenido.Location = new Point(15, 17);
+            lblBienvenido.Name = "lblBienvenido";
+            lblBienvenido.Size = new Size(74, 15);
+            lblBienvenido.TabIndex = 0;
+            lblBienvenido.Text = "Bienvenid@";
+            // 
+            // monthCalendar1
+            // 
+            monthCalendar1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            monthCalendar1.Location = new Point(552, 285);
+            monthCalendar1.Margin = new Padding(8, 7, 8, 7);
+            monthCalendar1.Name = "monthCalendar1";
+            monthCalendar1.TabIndex = 3;
+            // 
             // frmPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(panel1);
+            Controls.Add(monthCalendar1);
             Controls.Add(menuStrip1);
             Name = "frmPrincipal";
-            Text = "Form1";
+            Text = "Menu Principal";
+            Load += frmPrincipal_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -229,5 +271,8 @@
         private ToolStripMenuItem usuariosToolStripMenuItem;
         private ToolStripMenuItem permisosToolStripMenuItem;
         private MenuStrip menuStrip1;
+        private Panel panel1;
+        private Label lblBienvenido;
+        protected MonthCalendar monthCalendar1;
     }
 }
