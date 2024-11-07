@@ -1,9 +1,93 @@
 ﻿@page "/"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject SessionService sessionService
 
-<PageTitle>Index</PageTitle>
+<h3>@mensaje</h3>
 
-<h1>Hello, world!</h1>
+@if (!sessionService.IsLoggedIn)
+{
+    <div>
+        <label>Usuario: </label>
+        <input @bind="usuario" placeholder="Usuario" />
+    </div>
+    <div>
+        <label>Contraseña: </label>
+        <input @bind="contrasena" type="password" placeholder="Contraseña" />
+    </div>
+    <button @onclick="IniciarSesion">Ingresar</button>
+}
+else
+{
 
-Welcome to your new app.
+    <h3>Modulo Administración productos.</h3>
+  
+}
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    private string usuario;
+    private string contrasena;
+    private string mensaje;
+
+    private async Task IniciarSesion()
+    {
+        var loginData = new Entidades.iLogin { user = usuario, password = contrasena };
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("/Ingresar", loginData);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var usuarioData = await response.Content.ReadFromJsonAsync<Entidades.Usuario>();
+                mensaje = $"Bienvenido, {usuarioData.NombreApellido}";
+
+                // Guardar el token en localStorage
+                await localStorage.SetItemAsync("user-token", "some-auth-token");
+
+                // Actualizar el estado de sesión y notificar a otros componentes
+                sessionService.IsLoggedIn = true;
+            }
+            else
+            {
+                mensaje = "Credenciales incorrectas o usuario no encontrado.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al intentar iniciar sesión: {ex.Message}";
+        }
+    }
+
+    private async Task Logout()
+    {
+        sessionService.IsLoggedIn = false; // Actualiza el estado global
+        usuario = string.Empty;
+        contrasena = string.Empty;
+        mensaje = "Has cerrado sesión correctamente.";
+
+        // Eliminar el token de localStorage al cerrar sesión
+        await localStorage.RemoveItemAsync("user-token");
+
+        // Redirigir a la página principal después del logout
+        Navigation.NavigateTo("/"); // Esto recarga la página de inicio
+    }
+
+    private void NavegarAProductos()
+    {
+        Navigation.NavigateTo("/productos");
+    }
+
+    // Método que se ejecuta cuando se inicializa el componente
+    protected override void OnInitialized()
+    {
+        sessionService.OnChange += StateHasChanged; // Se suscribe al cambio de estado
+    }
+
+    // Limpiar la suscripción cuando el componente se destruya
+    public void Dispose()
+    {
+        sessionService.OnChange -= StateHasChanged;
+    }
+}

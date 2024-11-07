@@ -1,0 +1,124 @@
+﻿@page "/productos"
+@inject HttpClient Http
+
+<h3>Lista de Productos</h3>
+
+@if (productos == null)
+{
+    <p>Cargando productos...</p>
+}
+else if (productos.Count == 0)
+{
+    <p>No se encontraron productos.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ProductoID</th>
+                <th>Descripción</th>
+                <th>Costo Actual</th>
+                <th>Precio Venta Actual</th>
+                <th>Categoría</th>
+                <th>Proveedor</th>
+                <th>Acciones</th> <!-- Columna para el botón de modificar -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var producto in productos)
+            {
+                <tr>
+                    <td>@producto.ProductoID</td>
+                    <td>@producto.Descripcion</td>                    
+                    <td>
+                        @if (producto.IsEditingCosto)
+                        {
+                            <input @bind="producto.Costo" type="number" class="form-control" />
+                        }
+                        else
+                        {
+                            @producto.Costo
+                        }
+                    </td>
+                    <td>@producto.ValorVenta</td>
+                    <td>@producto.Categoria</td>
+                    <td>@producto.Proveedor</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => HabilitarEdicionCosto(producto)">Modificar</button>
+                        @if (producto.IsEditingCosto)
+                        {
+                            <button class="btn btn-success" @onclick="() => GuardarCambios(producto)">Guardar</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Entidades.Producto> productos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarProductos();
+    }
+
+    private async Task CargarProductos()
+    {
+        try
+        {
+            var response = await Http.GetFromJsonAsync<List<Entidades.Producto>>("https://localhost:7173/api/producto");
+
+            if (response != null)
+            {
+                productos = response;
+                // Inicializar IsEditingCosto a false para todos los productos
+                foreach (var producto in productos)
+                {
+                    producto.IsEditingCosto = false;
+                }
+            }
+            else
+            {
+                productos = new List<Entidades.Producto>();
+            }
+        }
+        catch (Exception ex)
+        {
+            productos = new List<Entidades.Producto>();
+            Console.Error.WriteLine($"Error al cargar productos: {ex.Message}");
+        }
+    }
+
+    // Habilitar la edición del costo
+    private void HabilitarEdicionCosto(Entidades.Producto producto)
+    {
+        producto.IsEditingCosto = true;
+    }
+
+    // Guardar los cambios del costo
+    private async Task GuardarCambios(Entidades.Producto producto)
+    {
+        try
+        {
+            var response = await Http.PutAsJsonAsync($"https://localhost:7173/api/producto/{producto.ProductoID}", producto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                producto.IsEditingCosto = false; // Deshabilitar la edición
+                await CargarProductos(); // Recargar los productos para reflejar el cambio
+            }
+            else
+            {
+                // Manejo de error, puedes mostrar un mensaje si lo deseas
+                Console.Error.WriteLine("Error al guardar el costo.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error al intentar guardar el costo: {ex.Message}");
+        }
+    }
+}

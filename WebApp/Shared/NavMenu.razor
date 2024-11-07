@@ -1,7 +1,11 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject SessionService sessionService
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">WebApp</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+        <button title="Navigation menu" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
@@ -9,21 +13,44 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
+        <!-- Home -->
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
+
+        <!-- Si el usuario está logueado, mostrar los enlaces a Productos y Ventas -->
+        @if (sessionService.IsLoggedIn)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="productos">
+                    <span class="oi oi-box" aria-hidden="true"></span> Productos
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="ventas">
+                    <span class="oi oi-cart" aria-hidden="true"></span> Ventas
+                </NavLink>
+            </div>
+
+            <!-- Botón para cerrar sesión -->
+            <div class="nav-item px-3">
+                <button class="nav-link btn btn-link" @onclick="Logout">
+                    <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                </button>
+            </div>
+        }
+        else
+        {
+            <!-- Si no está logueado, solo mostrar el enlace de login -->
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="login">
+                    <span class="oi oi-account-login" aria-hidden="true"></span> Login
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
@@ -32,8 +59,26 @@
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    // Suscribirse al evento de cambio de estado de sesión
+    protected override void OnInitialized()
+    {
+        sessionService.OnChange += StateHasChanged; // Notificar a Blazor cuando cambie el estado
+    }
+
+    // Cancelar la suscripción cuando el componente se elimine
+    public void Dispose()
+    {
+        sessionService.OnChange -= StateHasChanged;
+    }
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void Logout()
+    {
+        sessionService.IsLoggedIn = false; // Actualizar el estado global de la sesión
+        Navigation.NavigateTo("/"); // Redirige a la página principal después de logout
     }
 }
