@@ -65,7 +65,7 @@ namespace Escritorio
         {
             frmAMC f = new frmAMC();
             f.SoloLectura = false;
-            f.ShowDialog();
+            f.Show();
             if (f.DialogResult == DialogResult.OK) CargarGrillaConCargando();
         }
 
@@ -93,7 +93,7 @@ namespace Escritorio
             frmAMC f = new frmAMC();
             f.Clase = Clase;
             f.Modificacion = true;
-            f.ShowDialog();
+            f.Show();
             if (f.DialogResult == DialogResult.OK) CargarGrillaConCargando();
         }
 

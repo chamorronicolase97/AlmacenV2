@@ -131,9 +131,9 @@ namespace Escritorio
 
             ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["RecepcionID"].Value));
 
-            if (Clase.Estado.PedidoEstadoID != Negocio.PedidoEstado.Confirmado.PedidoEstadoID)
+            if (Clase.Estado.PedidoEstadoID != Negocio.PedidoEstado.Confirmado.PedidoEstadoID && Clase.EstadoID != Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
             {
-                frmMostrarMensaje.MostrarMensaje("Recepciones", "Las recepciones deben estar en Estado Controlado  para ser modificadas.");
+                frmMostrarMensaje.MostrarMensaje("Recepciones", "Las recepciones deben estar en Estado Controlado o Edición  para ser modificadas.");
                 return;
             }
 

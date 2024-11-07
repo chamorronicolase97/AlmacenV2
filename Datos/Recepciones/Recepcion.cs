@@ -30,11 +30,23 @@ namespace Datos
 
         public void Modificar(ClasePersistente clase)
         {
-            base.Pedidos.Attach(clase.Pedido);
-            base.PedidosEstados.Attach(clase.Estado);
+            // Asegúrate de que las entidades que ya existen se asignen directamente sin usar Attach.
+            var pedidoExistente = base.Pedidos.Find(clase.Pedido.PedidoID); // Si ya existe, se recupera
+            if (pedidoExistente != null)
+            {
+                clase.Pedido = pedidoExistente; // Se asigna la instancia existente al objeto
+            }
+
+            var estadoExistente = base.PedidosEstados.Find(clase.Estado.PedidoEstadoID); // Si ya existe, se recupera
+            if (estadoExistente != null)
+            {
+                clase.Estado = estadoExistente; // Se asigna la instancia existente al objeto
+            }
+
             base.Recepciones.Update(clase);
             base.SaveChanges();
         }
+
 
         public void Eliminar(ClasePersistente clase)
         {

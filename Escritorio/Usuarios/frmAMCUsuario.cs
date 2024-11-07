@@ -127,7 +127,8 @@ namespace Escritorio
             
             f.ObjetoSeleccionado = _grupo;
             f.ModoSeleccion = true;
-            if (DialogResult.OK == f.ShowDialog(this))
+            f.ShowDialog(this);
+            if (DialogResult.OK == f.DialogResult)
             {
                 _grupo = f.ObjetoSeleccionado;
 
@@ -144,7 +145,7 @@ namespace Escritorio
                 Clase = _grupo,
                 SoloLectura = true
             };
-            f.ShowDialog(this);
+            f.Show(this);
         }
 
         private void btnQuitarGrupo_Click(object sender, EventArgs e)

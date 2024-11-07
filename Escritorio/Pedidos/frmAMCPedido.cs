@@ -169,7 +169,11 @@ namespace Escritorio
             f.FiltroProveedor = _proveedor;
 
             f.ShowDialog(this);
+            if (f.DialogResult == DialogResult.OK)
+            {
             CargarGrillaConCargando();
+
+            }
         }
 
         private async void CargarGrillaConCargando()

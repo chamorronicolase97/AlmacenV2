@@ -66,21 +66,21 @@
             // cambiarUsuarioToolStripMenuItem
             // 
             cambiarUsuarioToolStripMenuItem.Name = "cambiarUsuarioToolStripMenuItem";
-            cambiarUsuarioToolStripMenuItem.Size = new Size(180, 22);
+            cambiarUsuarioToolStripMenuItem.Size = new Size(162, 22);
             cambiarUsuarioToolStripMenuItem.Text = "Cambiar Usuario";
             cambiarUsuarioToolStripMenuItem.Click += cambiarUsuarioToolStripMenuItem_Click;
             // 
             // reiniciarToolStripMenuItem
             // 
             reiniciarToolStripMenuItem.Name = "reiniciarToolStripMenuItem";
-            reiniciarToolStripMenuItem.Size = new Size(180, 22);
+            reiniciarToolStripMenuItem.Size = new Size(162, 22);
             reiniciarToolStripMenuItem.Text = "Reiniciar";
             reiniciarToolStripMenuItem.Click += reiniciarToolStripMenuItem_Click;
             // 
             // salirToolStripMenuItem
             // 
             salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            salirToolStripMenuItem.Size = new Size(180, 22);
+            salirToolStripMenuItem.Size = new Size(162, 22);
             salirToolStripMenuItem.Text = "Salir";
             salirToolStripMenuItem.Click += salirToolStripMenuItem_Click;
             // 
@@ -137,29 +137,30 @@
             // categoriasToolStripMenuItem
             // 
             categoriasToolStripMenuItem.Name = "categoriasToolStripMenuItem";
-            categoriasToolStripMenuItem.Size = new Size(167, 22);
+            categoriasToolStripMenuItem.Size = new Size(180, 22);
             categoriasToolStripMenuItem.Text = "Categorias";
             categoriasToolStripMenuItem.Click += categoriasToolStripMenuItem_Click;
             // 
             // proveedoresToolStripMenuItem
             // 
             proveedoresToolStripMenuItem.Name = "proveedoresToolStripMenuItem";
-            proveedoresToolStripMenuItem.Size = new Size(167, 22);
+            proveedoresToolStripMenuItem.Size = new Size(180, 22);
             proveedoresToolStripMenuItem.Text = "Proveedores";
             proveedoresToolStripMenuItem.Click += proveedoresToolStripMenuItem_Click;
             // 
             // productosToolStripMenuItem
             // 
             productosToolStripMenuItem.Name = "productosToolStripMenuItem";
-            productosToolStripMenuItem.Size = new Size(167, 22);
+            productosToolStripMenuItem.Size = new Size(180, 22);
             productosToolStripMenuItem.Text = "Productos";
             productosToolStripMenuItem.Click += productosToolStripMenuItem_Click;
             // 
             // costosProductosToolStripMenuItem
             // 
             costosProductosToolStripMenuItem.Name = "costosProductosToolStripMenuItem";
-            costosProductosToolStripMenuItem.Size = new Size(167, 22);
+            costosProductosToolStripMenuItem.Size = new Size(180, 22);
             costosProductosToolStripMenuItem.Text = "Costos Productos";
+            costosProductosToolStripMenuItem.Click += costosProductosToolStripMenuItem_Click;
             // 
             // configuraciónToolStripMenuItem
             // 

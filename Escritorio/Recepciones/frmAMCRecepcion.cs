@@ -60,7 +60,7 @@ namespace Escritorio
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            if (Clase == null)
+            if (Clase != null)
             {
                 if (Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
                 {
@@ -149,7 +149,10 @@ namespace Escritorio
             f.Recepcion = Clase;
             f.ShowDialog(this);
 
-            CargarGrillaConCargando();
+            if(f.DialogResult == DialogResult.OK)
+            {
+                CargarGrillaConCargando();
+            }
 
         }
 

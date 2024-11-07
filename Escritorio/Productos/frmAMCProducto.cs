@@ -147,7 +147,8 @@ namespace Escritorio
         {
             frmABMSProveedores f = new frmABMSProveedores { };
             f.ObjetoSeleccionado = _proveedor;
-            if (DialogResult.OK == f.ShowDialog(this))
+            f.ShowDialog(this);
+            if (DialogResult.OK == f.DialogResult)
             {
                 _proveedor = f.ObjetoSeleccionado;
 
@@ -177,7 +178,8 @@ namespace Escritorio
             frmABMSCategorias f = new frmABMSCategorias { };
             f.ObjetoSeleccionado = _categoria;
             f.ModoSeleccion = true;
-            if (DialogResult.OK == f.ShowDialog(this))
+            f.ShowDialog(this);
+            if (DialogResult.OK == f.DialogResult)
             {
                 _categoria = f.ObjetoSeleccionado;
 

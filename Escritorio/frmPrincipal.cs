@@ -96,5 +96,11 @@ namespace Escritorio
         {
             Load += frmPrincipal_Load;
         }
+
+        private void costosProductosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCostosProductos f = new frmCostosProductos();
+            f.Show();
+        }
     }
 }
