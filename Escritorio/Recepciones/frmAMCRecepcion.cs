@@ -22,16 +22,32 @@ namespace Escritorio
         public bool Modificacion { get; set; } = false;
         protected bool _soloLectura;
         private IEnumerable<Entidades.DetalleRecepcion> _listadoDetalle;
+        private Entidades.Usuario _usuarioActual;
 
+        const string Permiso = "RecepcionAMC";
         public bool SoloLectura { get { return _soloLectura; } set { _soloLectura = value; } }
         public frmAMCRecepcion()
         {
             InitializeComponent();
-
+        }
+        public frmAMCRecepcion(Entidades.Usuario usuarioActual)
+        {
+            InitializeComponent();
+            _usuarioActual = usuarioActual;
         }
 
         private void frmAMCRecepcion_Load(object sender, EventArgs e)
         {
+            if (_usuarioActual != null)
+            {
+                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, Permiso))
+                {
+                    MessageBox.Show("No tienes permiso para acceder a esta sección.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+            }
+
             if (Clase != null)
             {
                 Proveedor = Clase.Pedido.Proveedor;

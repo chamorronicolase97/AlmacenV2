@@ -17,6 +17,8 @@ namespace Escritorio
     {
         public ClasePersistente Clase { get; set; }
         protected bool _soloLectura;
+        private Entidades.Usuario _usuarioActual;
+        const string Permiso = "PermisoAMC";
 
         public bool Modificacion { get; set; } = false;
         public bool SoloLectura { get { return _soloLectura; } set { _soloLectura = value; } }
@@ -24,12 +26,25 @@ namespace Escritorio
         public frmAMCPermiso()
         {
             InitializeComponent();
-
+        }
+        public frmAMCPermiso(Entidades.Usuario usuarioActual)
+        {
+            InitializeComponent();
+            _usuarioActual = usuarioActual;
         }
 
         private void frmAMCPermiso_Load(object sender, EventArgs e)
         {
-            if(Clase != null)
+            if (_usuarioActual != null)
+            {
+                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, Permiso))
+                {
+                    MessageBox.Show("No tienes permiso para acceder a esta sección.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+            }
+            if (Clase != null)
             {
                 txtID.Text = Clase.PermisoID.ToString();
                 txtCodPermiso.Text = Clase.CodPermiso;

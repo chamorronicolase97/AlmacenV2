@@ -5,42 +5,47 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClasePersistente = Entidades.Usuario;
-using ClaseNegocio = Negocio.Usuario;
-using frmAMC = Escritorio.frmAMCUsuario; 
+using ClasePersistente = Entidades.PermisoGrupo;
+using ClaseNegocio = Negocio.PermisoGrupo;
+using frmAMC = Escritorio.frmAMCPermisoGrupo;
+using Entidades;
 
 namespace Escritorio
 {
-    public partial class frmABMSUsuarios : Form
+    public partial class frmABMSPermisosGrupos : Form
     {
         private ClasePersistente _objetoSeleccionado;
+        private Entidades.Proveedor _proveedor;
         private BindingSource bindingSource;
+        private bool formularioCargado = false;
         private bool _modoSeleccion = false;
         private Entidades.Usuario _usuarioActual;
+        const string CodPermiso = "PermisosGruposABMS";
 
-        const string Permiso = "UsuariosABMS";
-
-        public frmABMSUsuarios()
+        public frmABMSPermisosGrupos()
         {
             InitializeComponent();
             bindingSource = new BindingSource();
         }
-        public frmABMSUsuarios(Entidades.Usuario usuarioActual)
+        public frmABMSPermisosGrupos(Entidades.Usuario usuarioActual)
         {
             InitializeComponent();
             _usuarioActual = usuarioActual;
             bindingSource = new BindingSource();
         }
+
         public ClasePersistente ObjetoSeleccionado { get { return _objetoSeleccionado; } set { _objetoSeleccionado = value; } }
         public bool ModoSeleccion { get { return _modoSeleccion; } set { _modoSeleccion = value; } }
-        private void frmABMSUsuarios_Load(object sender, EventArgs e)
+
+        private void frmABMSPermisosGrupos_Load(object sender, EventArgs e)
         {
             if (_usuarioActual != null)
             {
-                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, Permiso))
+                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, CodPermiso))
                 {
                     MessageBox.Show("No tienes permiso para acceder a esta sección.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     this.Close();
@@ -56,6 +61,8 @@ namespace Escritorio
             }
 
             CargarGrillaConCargando();
+
+            formularioCargado = true;
         }
 
         private async void CargarGrillaConCargando()
@@ -74,22 +81,23 @@ namespace Escritorio
         private async Task CargarGrilla()
         {
             var datos = await ClaseNegocio.ListarTodos();
+            var permisosGruposview = datos.Select(p => new { p.PermisoGrupoID, p.PermisoID, p.Permiso.CodPermiso, p.GrupoID, p.Grupo.Descripcion}).ToList();
 
-            bindingSource.DataSource = datos;
-            dgvDatos.DataSource = bindingSource.DataSource;
+            bindingSource.DataSource = permisosGruposview;
+            dgvDatos.DataSource = bindingSource;
 
-            dgvDatos.Columns["UsuarioID"].HeaderText = "ID";
-            dgvDatos.Columns["NombreApellido"].HeaderText = "Nombre y Apellido";
-            dgvDatos.Columns["CodUsuario"].HeaderText = "Cod. Usuario";
-            dgvDatos.Columns["Contraseña"].Visible = false;
-            dgvDatos.Columns["UsuarioID"].Visible = false;
+            dgvDatos.Columns["PermisoGrupoID"].HeaderText = "ID";
+            dgvDatos.Columns["CodPermiso"].HeaderText = "Cod. Permiso";
+            dgvDatos.Columns["Descripcion"].HeaderText = "Grupo";
+            dgvDatos.Columns["PermisoID"].Visible = false;
+            dgvDatos.Columns["GrupoID"].Visible = false;
 
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
         }
 
         private void btnCrear_Click(object sender, EventArgs e)
         {
-            frmAMCUsuario f = new frmAMCUsuario(_usuarioActual);
+            frmAMC f = new frmAMC(_usuarioActual);
             f.SoloLectura = false;
             f.ShowDialog();
             if (f.DialogResult == DialogResult.OK) CargarGrillaConCargando();
@@ -99,31 +107,25 @@ namespace Escritorio
         {
             if (dgvDatos.CurrentRow == null) return;
 
-            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["UsuarioID"].Value));
+            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["PermisoGrupoID"].Value));
 
-            DialogResult = MessageBox.Show("Desea eliminar el Usuario " + Clase.NombreApellido + "?", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult = MessageBox.Show("Desea eliminar el Permiso de Grupo ?", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (DialogResult == DialogResult.No) return;
-
-            if (!ClaseNegocio.EsVacio(Clase.UsuarioID))
-            {
-                frmMostrarMensaje.MostrarMensaje($"{ClasePersistente.NombreClase}", "El Usuario " + ClasePersistente.NombreClase + " no se encuentra vacio, no puede eliminarse.");
-                return;
-            }
-
             ClaseNegocio.Eliminar(Clase);
 
-            frmMostrarMensaje.MostrarMensaje($"{ClasePersistente.NombreClase}", "Baja de " + ClasePersistente.NombreClase + " exitosa.");
+            frmMostrarMensaje.MostrarMensaje($"{PermisoGrupo.NombreClase}", "Baja de " + PermisoGrupo.NombreClase + " exitosa.");
 
             CargarGrillaConCargando();
+
         }
 
         private async void btnModificar_Click(object sender, EventArgs e)
         {
             if (dgvDatos.CurrentRow == null) return;
 
-            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["UsuarioID"].Value));
+            ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["PermisoGrupoID"].Value));
 
-            frmAMCUsuario f = new frmAMCUsuario(_usuarioActual);
+            frmAMC f = new frmAMC(_usuarioActual);
             f.Clase = Clase;
             f.Modificacion = true;
             f.ShowDialog();
@@ -138,28 +140,17 @@ namespace Escritorio
                 return;
             }
 
-            _objetoSeleccionado = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["UsuarioID"].Value));
+            _objetoSeleccionado = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["PermisoGrupoID"].Value));
 
             this.DialogResult = DialogResult.OK;
             this.Close();
-        }
-
-        private async void btnConsultar_Click(object sender, EventArgs e)
-        {
-            if (dgvDatos.CurrentRow != null)
-            {
-                frmAMC f = new frmAMC(_usuarioActual);
-                ClasePersistente usuario = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["UsuarioID"].Value));
-                f.SoloLectura = true;
-                f.Clase = usuario;
-                f.Show(this);
-            }
         }
 
         private void txtFiltro_TextChanged(object sender, EventArgs e)
         {
             AplicarFiltroRapido();
         }
+
         private void AplicarFiltroRapido()
         {
             string str = "";
@@ -170,11 +161,49 @@ namespace Escritorio
             }
             else
             {
-                str += $@"NombreApellido LIKE '%{filtro}%' OR CodUsuario LIKE '%{filtro}%' OR Descripcion LIKE '%{filtro}%' and ";
+                str += $@"CodPermiso LIKE '%{filtro}%' OR Descripcion LIKE '%{filtro}%' and ";
             }
-
             str += "1=1";
             bindingSource.Filter = str;
+        }
+
+        private async void btnActualizarFiltro_Click(object sender, EventArgs e)
+        {
+            if (dgvDatos.CurrentRow != null)
+            {
+                ClasePersistente _PermisoGrupo = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["PermisoGrupoID"].Value));
+                CargarGrillaConCargando();
+            }
+            else
+            {
+                CargarGrillaConCargando();
+            }
+        }
+
+        private void cmbCategoria_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (dgvDatos == null) return;
+            if (formularioCargado == false) return;
+            AplicarFiltroRapido();
+        }
+
+        private void cmbProveedor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (dgvDatos == null) return;
+            if (formularioCargado == false) return;
+            AplicarFiltroRapido();
+        }
+
+        private async void btnConsultar_Click(object sender, EventArgs e)
+        {
+            if (dgvDatos.CurrentRow != null)
+            {
+                frmAMC f = new frmAMC(_usuarioActual);
+                ClasePersistente clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["PermisoGrupoID"].Value));
+                f.SoloLectura = true;
+                f.Clase = clase;
+                f.Show(this);
+            }
         }
     }
 }

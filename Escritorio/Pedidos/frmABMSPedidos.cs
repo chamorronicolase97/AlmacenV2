@@ -21,6 +21,9 @@ namespace Escritorio
         private BindingSource bindingSource;
         private bool _modoSeleccion;
         private IEnumerable<Entidades.Pedido> _listado;
+        private Entidades.Usuario _usuarioActual;
+        const string Permiso = "PedidosABMS";
+
 
         #region Colores
         private Color colorEnEdicion = Color.LightBlue;
@@ -35,12 +38,27 @@ namespace Escritorio
         public frmABMSPedidos()
         {
             InitializeComponent();
-
+            bindingSource = new BindingSource();
+        }
+        public frmABMSPedidos(Entidades.Usuario usuarioActual)
+        {
+            InitializeComponent();
+            _usuarioActual = usuarioActual;
             bindingSource = new BindingSource();
         }
 
         private void frmABMSPedidos_Load(object sender, EventArgs e)
         {
+            if (_usuarioActual != null)
+            {
+                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, Permiso))
+                {
+                    MessageBox.Show("No tienes permiso para acceder a esta sección.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+            }
+
             pnlEnEdicion.BackColor = colorEnEdicion;
             pnlConfirmado.BackColor = colorConfirmado;
             pnlRecibido.BackColor = colorRecibido;
@@ -94,7 +112,7 @@ namespace Escritorio
 
         private void btnCrear_Click(object sender, EventArgs e)
         {
-            frmAMCPedido f = new frmAMCPedido();
+            frmAMCPedido f = new frmAMCPedido(_usuarioActual);
             f.SoloLectura = false;
             f.ShowDialog(this);
             if (f.DialogResult == DialogResult.OK) CargarGrillaConCargando();
@@ -128,7 +146,7 @@ namespace Escritorio
 
             ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["PedidoID"].Value));
 
-            frmAMC f = new frmAMC();
+            frmAMC f = new frmAMC(_usuarioActual);
             f.Clase = Clase;
             f.Modificacion = true;
             f.ShowDialog(this);
@@ -159,7 +177,7 @@ namespace Escritorio
         {
             if (dgvDatos.CurrentRow != null)
             {
-                frmAMC f = new frmAMC();
+                frmAMC f = new frmAMC(_usuarioActual);
                 ClasePersistente clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["PedidoID"].Value));
                 f.SoloLectura = true;
                 f.Clase = clase;

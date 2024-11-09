@@ -21,7 +21,9 @@ namespace Escritorio
         private ClasePersistente _objetoSeleccionado;
         private IEnumerable<Entidades.Recepcion> _listado;
         private BindingSource bindingSource;
+        private Entidades.Usuario _usuarioActual;
 
+        const string Permiso = "RecepcionesABMS";
         #region Colores
         private Color colorEnEdicion = Color.LightBlue;
         private Color colorConfirmado = Color.LimeGreen;
@@ -33,13 +35,28 @@ namespace Escritorio
         public frmABMSRecepciones()
         {
             InitializeComponent();
-
             bindingSource = new BindingSource();
+        }
 
+        public frmABMSRecepciones(Entidades.Usuario usuarioActual)
+        {
+            InitializeComponent();
+            _usuarioActual = usuarioActual;
+            bindingSource = new BindingSource();
         }
         public ClasePersistente ObjetoSeleccionado { get { return _objetoSeleccionado; } set { _objetoSeleccionado = value; } }
         private void frmABMSPedidos_Load(object sender, EventArgs e)
         {
+            if (_usuarioActual != null)
+            {
+                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, Permiso))
+                {
+                    MessageBox.Show("No tienes permiso para acceder a esta sección.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+            }
+
             pnlEnEdicion.BackColor = colorEnEdicion;
             pnlConfirmado.BackColor = colorConfirmado;
             pnlRecibido.BackColor = colorRecibido;
@@ -95,7 +112,7 @@ namespace Escritorio
             Proveedor proveedor = pedido.Proveedor;
             pedidos.Close();
 
-            frmAMCRecepcion f = new frmAMCRecepcion();
+            frmAMCRecepcion f = new frmAMCRecepcion(_usuarioActual);
             f.Pedido = pedido;
             f.Proveedor = proveedor;
             f.SoloLectura = false;
@@ -137,7 +154,7 @@ namespace Escritorio
                 return;
             }
 
-            frmAMCRecepcion f = new frmAMCRecepcion();
+            frmAMCRecepcion f = new frmAMCRecepcion(_usuarioActual);
             f.Clase = Clase;
             f.Modificacion = true;
             f.ShowDialog(this);
@@ -162,7 +179,7 @@ namespace Escritorio
         {
             if (dgvDatos.CurrentRow != null)
             {
-                frmAMCRecepcion f = new frmAMCRecepcion();
+                frmAMCRecepcion f = new frmAMCRecepcion(_usuarioActual);
                 Recepcion recepcion = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["RecepcionID"].Value));
                 f.SoloLectura = true;
                 f.Clase = recepcion;

@@ -18,16 +18,35 @@ namespace Escritorio
     {
         List<iProductoCosto> listado;
         private BindingSource bindingSource;
+        private Entidades.Usuario _usuarioActual;
+
+        const string Permiso = "CostosProductos";
+
         public frmCostosProductos()
         {
             InitializeComponent();
             bindingSource = new BindingSource();
 
         }
+        public frmCostosProductos(Entidades.Usuario usuarioActual)
+        {
+            InitializeComponent();
+            _usuarioActual = usuarioActual;
+            bindingSource = new BindingSource();
+        }
 
         private void frmCostosProductos_Load(object sender, EventArgs e)
-
         {
+            if (_usuarioActual != null)
+            {
+                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, Permiso))
+                {
+                    MessageBox.Show("No tienes permiso para acceder a esta sección.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+            }
+
             CargarGrillaConCargando();
         }
 

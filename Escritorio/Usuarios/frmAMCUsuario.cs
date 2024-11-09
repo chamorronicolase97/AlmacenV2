@@ -18,17 +18,34 @@ namespace Escritorio
         public ClasePersistente Clase { get; set; }
         protected bool _soloLectura;
         private Grupo? _grupo;
+        private Entidades.Usuario _usuarioActual;
+        const string Permiso = "UsuarioAMC";
+
         public bool Modificacion { get; set; } = false;
         public bool SoloLectura { get { return _soloLectura; } set { _soloLectura = value; } }
         public frmAMCUsuario()
         {
             InitializeComponent();
-
+        }
+        public frmAMCUsuario(Entidades.Usuario usuarioActual)
+        {
+            InitializeComponent();
+            _usuarioActual = usuarioActual;
         }
 
         private void frmAMCUsuario_Load(object sender, EventArgs e)
         {
-            if(Clase != null)
+
+            if (_usuarioActual != null)
+            {
+                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, Permiso))
+                {
+                    MessageBox.Show("No tienes permiso para acceder a esta sección.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+            }
+            if (Clase != null)
             {
                 txtID.Text = Clase.UsuarioID.ToString();
                 txtNomApe.Text = Clase.NombreApellido;

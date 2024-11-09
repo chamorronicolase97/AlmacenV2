@@ -19,10 +19,18 @@ namespace Escritorio
         private ClasePersistente _objetoSeleccionado;
         private BindingSource bindingSource;
         private bool _modoSeleccion = false;
+        private Entidades.Usuario _usuarioActual;
+        const string Permiso = "GruposABMS";
+
         public frmABMSGrupos()
         {
             InitializeComponent();
-
+            bindingSource = new BindingSource();
+        }
+        public frmABMSGrupos(Entidades.Usuario usuarioActual)
+        {
+            InitializeComponent();
+            _usuarioActual = usuarioActual;
             bindingSource = new BindingSource();
         }
         public ClasePersistente ObjetoSeleccionado { get { return _objetoSeleccionado; } set { _objetoSeleccionado = value; } }
@@ -31,6 +39,15 @@ namespace Escritorio
         private void frmABMSGrupos_Load(object sender, EventArgs e)
 
         {
+            if(_usuarioActual != null)
+            {
+                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, Permiso))
+                {
+                    MessageBox.Show("No tienes permiso para acceder a esta sección.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+            }
             if (_modoSeleccion)
             {
                 btnCrear.Enabled = false;
@@ -69,7 +86,7 @@ namespace Escritorio
 
         private void btnCrear_Click(object sender, EventArgs e)
         {
-            frmAMC f = new frmAMC();
+            frmAMC f = new frmAMC(_usuarioActual);
             f.SoloLectura = false;
             f.Show();
             if (f.DialogResult == DialogResult.OK) CargarGrilla();
@@ -103,7 +120,7 @@ namespace Escritorio
             ClasePersistente Clase = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
 
 
-            frmAMC f = new frmAMC();
+            frmAMC f = new frmAMC(_usuarioActual);
             f.Clase = Clase;
             f.Modificacion = true;
             f.Show();
@@ -128,7 +145,7 @@ namespace Escritorio
         {
             if (dgvDatos.CurrentRow != null)
             {
-                frmAMC f = new frmAMC();
+                frmAMC f = new frmAMC(_usuarioActual);
                 ClasePersistente grupo = await ClaseNegocio.Get(Convert.ToInt32(dgvDatos.CurrentRow.Cells["GrupoID"].Value));
                 f.SoloLectura = true;
                 f.Clase = grupo;

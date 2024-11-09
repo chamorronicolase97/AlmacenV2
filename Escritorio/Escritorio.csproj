@@ -17,4 +17,13 @@
     <ProjectReference Include="..\Negocio\Negocio.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="PermisosGrupos\frmABMSPermisosGrupos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PermisosGrupos\frmAMCPermisoGrupo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

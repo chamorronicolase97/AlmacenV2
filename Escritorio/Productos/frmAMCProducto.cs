@@ -19,18 +19,36 @@ namespace Escritorio
         protected bool _soloLectura;
         private Proveedor? _proveedor;
         private Categoria? _categoria;
+        private Entidades.Usuario _usuarioActual;
+
+        const string Permiso = "ProductoAMC";
 
         public bool Modificacion { get; set; } = false;
         public bool SoloLectura { get { return _soloLectura; } set { _soloLectura = value; } }
         public frmAMCProducto()
         {
             InitializeComponent();
+        }
 
+        public frmAMCProducto(Entidades.Usuario usuarioActual)
+        {
+            InitializeComponent();
+            _usuarioActual = usuarioActual;
         }
 
         private void frmAMCCategoria_Load(object sender, EventArgs e)
         {
-            if(Clase != null)
+            if (_usuarioActual != null)
+            {
+                if (!Datos.PermisoGrupo.TienePermiso(_usuarioActual.Grupo.GrupoID, Permiso))
+                {
+                    MessageBox.Show("No tienes permiso para acceder a esta sección.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+            }
+
+            if (Clase != null)
             {
                 txtID.Text = Clase.ProductoID.ToString();
                 txtDescripcion.Text = Clase.Descripcion;
