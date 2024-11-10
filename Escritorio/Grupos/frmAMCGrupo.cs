@@ -43,7 +43,6 @@ namespace Escritorio
                     return;
                 }
             }
-
             if (Clase != null)
             {
                 txtID.Text = Clase.GrupoID.ToString();

@@ -30,12 +30,13 @@ namespace Datos
         public DbSet<Entidades.DetalleRecepcion> DetallesRecepciones { get; set; }
         public DbSet<Entidades.Cliente> Clientes { get; set; }
         public DbSet<Entidades.PermisoGrupo> PermisosGrupos { get; set; }
+        public DbSet<Entidades.Venta> Ventas { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(@"Data Source=HWNOTE163490\SQLEXPRESS;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-KHKJ2OC;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
-             optionsBuilder.EnableSensitiveDataLogging();
+            optionsBuilder.UseSqlServer(@"Data Source=HWNOTE163490\SQLEXPRESS;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
+            //optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-KHKJ2OC;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

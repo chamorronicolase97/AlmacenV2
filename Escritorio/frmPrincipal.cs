@@ -108,5 +108,11 @@ namespace Escritorio
             frmABMSPermisosGrupos f = new frmABMSPermisosGrupos(Usuario);
             f.Show();
         }
+
+        private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmABMSClientes f = new frmABMSClientes(Usuario);
+            f.Show();
+        }
     }
 }

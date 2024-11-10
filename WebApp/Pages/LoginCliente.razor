@@ -1,0 +1,146 @@
+﻿@page "/login-cliente"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject SessionService sessionService
+
+<h3>@mensaje</h3>
+
+@if (!isClienteLoggedIn)
+{
+    <div class="login-container">
+        <div class="login-box">
+            <h4 class="text-center">Iniciar Sesión Cliente</h4>
+
+            <div class="mb-3">
+                <label for="clienteUsuario" class="form-label">Usuario</label>
+                <input id="clienteUsuario" @bind="clienteUsuario" class="form-control" placeholder="Usuario" />
+            </div>
+
+            <div class="mb-3">
+                <label for="clientePassword" class="form-label">Contraseña</label>
+                <input id="clientePassword" @bind="clientePassword" type="password" class="form-control" placeholder="Contraseña" />
+            </div>
+
+            <button @onclick="IniciarSesionCliente" class="btn btn-primary w-100">Ingresar</button>
+        </div>
+    </div>
+}
+else
+{
+    <h3>Bienvenido al sistema de compras.</h3>
+}
+
+@code {
+    private string clienteUsuario = string.Empty;
+    private string clientePassword = string.Empty;
+    private string mensaje;
+    private bool isClienteLoggedIn = false;
+
+    private async Task IniciarSesionCliente()
+    {
+        var loginData = new Entidades.iLogin { user = clienteUsuario, password = clientePassword };
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("/IngresarCliente", loginData);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var clienteData = await response.Content.ReadFromJsonAsync<Entidades.Cliente>();
+                mensaje = $"Bienvenido, {clienteData.Denominacion}";
+
+                // Guardar el ClienteID y otros datos importantes en localStorage
+                await localStorage.SetItemAsync("cliente-id", clienteData.ClienteID);  // Suponiendo que el ClienteID es parte de Cliente
+
+                // Guardar token o cualquier otro dato necesario
+                await localStorage.SetItemAsync("cliente-token", "some-client-auth-token");
+
+                // Actualizar estado de sesión
+                isClienteLoggedIn = true;
+
+                // Redirigir a la página de productos
+                Navigation.NavigateTo("/ListadoProducto");
+            }
+            else
+            {
+                mensaje = "Credenciales incorrectas o cliente no encontrado.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al intentar iniciar sesión: {ex.Message}";
+        }
+    }
+
+
+    protected override void OnInitialized()
+    {
+        sessionService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        sessionService.OnChange -= StateHasChanged;
+    }
+}
+
+<style>
+    /* Contenedor centrado */
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f7f7f7;
+    }
+
+    /* Caja de login estilizada */
+    .login-box {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+        .login-box h4 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+    /* Estilo para los campos de entrada */
+    .form-label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+    /* Botón de ingresar */
+    .btn {
+        font-size: 16px;
+        font-weight: 600;
+        padding: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+</style>

@@ -1,0 +1,241 @@
+﻿@page "/ListadoProducto"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<h3 class="text-center mb-4">Lista de Productos Disponibles</h3>
+
+<!-- Botón de Confirmar compra -->
+<div class="text-center mb-4">
+    <button class="btn btn-primary" @onclick="ConfirmarCompra">Confirmar Compra</button>
+</div>
+
+@if (productos == null)
+{
+    <div class="alert alert-info text-center">Cargando productos...</div>
+}
+else if (productos.Count == 0)
+{
+    <div class="alert alert-warning text-center">No se encontraron productos.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>ProductoID</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Categoría</th>
+                    <th>Proveedor</th>
+                    <th>Seleccionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var producto in productos.Where(p => p.Stock > 0))
+                {
+                    <tr>
+                        <td>@producto.ProductoID</td>
+                        <td>@producto.Descripcion</td>
+                        <td>@producto.ValorVenta.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</td>
+                        <td>@producto.Categoria.Descripcion</td>
+                        <td>@producto.Proveedor.RazonSocial</td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <!-- Botones para agregar y quitar unidades -->
+                                <button class="btn btn-success mx-2" @onclick="() => AgregarUnidad(producto)">+</button>
+                                <span class="mx-2">@GetCantidadProducto(producto)</span>
+                                <button class="btn btn-danger mx-2" @onclick="() => QuitarUnidad(producto)">-</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(mensaje))
+{
+    <div class="alert alert-warning mt-3 text-center">@mensaje</div>
+}
+
+@code {
+    private List<Entidades.Producto> productos;
+    private Dictionary<int, int> cantidades = new(); // Diccionario para almacenar las cantidades de cada producto
+    private string mensaje;
+    private int? productoSeleccionadoID; // ID del producto seleccionado actualmente
+    private int? clienteID;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Recuperar el ClienteID desde el localStorage
+        clienteID = await localStorage.GetItemAsync<int?>("cliente-id");
+
+        if (!clienteID.HasValue)
+        {
+            // Si no se encuentra el ClienteID, redirige al login
+            Navigation.NavigateTo("/login-cliente");
+            return;
+        }
+
+        // Cargar productos
+        await CargarProductos();
+    }
+
+    private async Task CargarProductos()
+    {
+        try
+        {
+            var response = await Http.GetFromJsonAsync<List<Entidades.Producto>>("https://localhost:7173/api/producto");
+
+            if (response != null)
+            {
+                productos = response;
+            }
+            else
+            {
+                productos = new List<Entidades.Producto>();
+            }
+        }
+        catch (Exception ex)
+        {
+            productos = new List<Entidades.Producto>();
+            Console.Error.WriteLine($"Error al cargar productos: {ex.Message}");
+        }
+    }
+
+    private void AgregarUnidad(Entidades.Producto producto)
+    {
+        // Verificar si se ha alcanzado el máximo de stock
+        if (cantidades.ContainsKey(producto.ProductoID) && cantidades[producto.ProductoID] >= producto.Stock)
+        {
+            mensaje = $"Se alcanzó el límite de productos disponibles";
+            return;
+        }
+
+        if (productoSeleccionadoID != null && productoSeleccionadoID != producto.ProductoID)
+        {
+            mensaje = "Ya tienes un producto en el carrito. No puedes añadir otro tipo de producto.";
+            return;
+        }
+
+        if (!cantidades.ContainsKey(producto.ProductoID))
+        {
+            cantidades[producto.ProductoID] = 0;
+            productoSeleccionadoID = producto.ProductoID;
+        }
+
+        cantidades[producto.ProductoID]++;
+        mensaje = string.Empty; // Limpiar cualquier mensaje previo
+    }
+
+    private void QuitarUnidad(Entidades.Producto producto)
+    {
+        if (cantidades.ContainsKey(producto.ProductoID) && cantidades[producto.ProductoID] > 0)
+        {
+            cantidades[producto.ProductoID]--;
+
+            // Si la cantidad llega a 0, eliminamos el producto del carrito
+            if (cantidades[producto.ProductoID] == 0)
+            {
+                cantidades.Remove(producto.ProductoID);
+                productoSeleccionadoID = null; // Permitir agregar otro producto después de quitar el actual
+            }
+        }
+    }
+
+    private int GetCantidadProducto(Entidades.Producto producto)
+    {
+        return cantidades.ContainsKey(producto.ProductoID) ? cantidades[producto.ProductoID] : 0;
+    }
+
+    private async Task ConfirmarCompra()
+    {
+        // Verificar si no se ha seleccionado ningún producto
+        if (cantidades.Count == 0)
+        {
+            mensaje = "No se ha seleccionado ningún producto para la compra.";
+            return;
+        }
+
+        // Obtener el único producto seleccionado (en este caso, solo puede haber uno)
+        var productoSeleccionado = productos.FirstOrDefault(p => p.ProductoID == cantidades.Keys.FirstOrDefault());
+
+        if (productoSeleccionado == null)
+        {
+            mensaje = "Producto no encontrado.";
+            return;
+        }
+
+        // Obtener el objeto Cliente (suponiendo que 'clienteID' está disponible y tiene el valor correcto)
+        var clienteSeleccionado = await ObtenerCliente(clienteID.Value);
+        if (clienteSeleccionado == null)
+        {
+            mensaje = "Cliente no encontrado.";
+            return;
+        }
+
+        // Crear objeto Venta con los objetos completos de Producto y Cliente, junto con su cantidad y la fecha actual
+        var venta = new Entidades.Venta
+            {
+                Producto = productoSeleccionado,  // Enviar el objeto Producto completo
+                ProductoID = productoSeleccionado.ProductoID,  // Si la API requiere el ID también, puedes incluirlo
+                Cantidad = cantidades[productoSeleccionado.ProductoID],  // Cantidad seleccionada
+                Importe = productoSeleccionado.ValorVenta * cantidades[productoSeleccionado.ProductoID],  // Calcular el importe
+                Cliente = clienteSeleccionado,  // Enviar el objeto Cliente completo
+                ClienteID = clienteSeleccionado.ClienteID,  // Si la API requiere el ID también, puedes incluirlo
+                Fecha = DateTime.Now  // Asignar la fecha y hora actual
+            };
+
+        try
+        {
+            // Realizar la solicitud POST para guardar la venta
+            var response = await Http.PostAsJsonAsync("https://localhost:7173/api/venta", venta);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Actualizar el stock del producto vendido
+                var productoVendido = venta.Producto;
+                var cantidadVendida = venta.Cantidad;
+
+                // Restar la cantidad vendida al stock del producto
+                productoVendido.Stock -= cantidadVendida;
+
+                // Actualizar el producto en el backend
+                var actualizarStockResponse = await Http.PutAsJsonAsync($"https://localhost:7173/api/producto/{productoVendido.ProductoID}", productoVendido);
+
+                if (actualizarStockResponse.IsSuccessStatusCode)
+                {
+                    var ventaCreada = await response.Content.ReadFromJsonAsync<Entidades.Venta>();
+
+                    // Guardamos el ID de la venta en el localStorage
+                    await localStorage.SetItemAsync("venta-id", ventaCreada.VentaID);
+                    // Redirigir a la página ComprobanteVenta
+                    Navigation.NavigateTo("/ComprobanteVenta");
+                }
+                else
+                {
+                    mensaje = $"Error al actualizar el stock: {await actualizarStockResponse.Content.ReadAsStringAsync()}";
+                }
+            }
+            else
+            {
+                // Agregar detalles del código de estado y el contenido de la respuesta
+                mensaje = $"Ocurrió un error al procesar la venta. Código de estado: {response.StatusCode}, Detalle: {await response.Content.ReadAsStringAsync()}";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al realizar la compra: {ex.Message}";
+        }
+    }
+
+    // Método adicional para obtener el Cliente, según su ID
+    private async Task<Entidades.Cliente> ObtenerCliente(int clienteID)
+    {
+        var response = await Http.GetFromJsonAsync<Entidades.Cliente>($"https://localhost:7173/api/Cliente/{clienteID}");
+        return response;
+    }
+}

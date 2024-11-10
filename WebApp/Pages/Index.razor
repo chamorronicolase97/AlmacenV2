@@ -8,21 +8,30 @@
 
 @if (!sessionService.IsLoggedIn)
 {
-    <div>
-        <label>Usuario: </label>
-        <input @bind="usuario" placeholder="Usuario" />
+    <div class="login-container">
+        <div class="login-box">
+            <h4 class="text-center">Iniciar Sesión</h4>
+
+            <div class="mb-3">
+                <label for="usuario" class="form-label">Usuario</label>
+                <input id="usuario" @bind="usuario" class="form-control" placeholder="Usuario" />
+            </div>
+
+            <div class="mb-3">
+                <label for="contrasena" class="form-label">Contraseña</label>
+                <input id="contrasena" @bind="contrasena" type="password" class="form-control" placeholder="Contraseña" />
+            </div>
+
+            <button @onclick="IniciarSesion" class="btn btn-primary w-100">Ingresar</button>
+        </div>
     </div>
-    <div>
-        <label>Contraseña: </label>
-        <input @bind="contrasena" type="password" placeholder="Contraseña" />
-    </div>
-    <button @onclick="IniciarSesion">Ingresar</button>
 }
 else
 {
-
-    <h3>Modulo Administración productos.</h3>
-  
+    <div class="welcome-container">
+        <h3 class="welcome-message">¡Bienvenido, @mensaje!</h3>
+        <p class="welcome-text">Estás en el módulo de administración de productos. Desde aquí puedes gestionar todo lo relacionado con los productos.</p>
+    </div>
 }
 
 @code {
@@ -41,7 +50,7 @@ else
             if (response.IsSuccessStatusCode)
             {
                 var usuarioData = await response.Content.ReadFromJsonAsync<Entidades.Usuario>();
-                mensaje = $"Bienvenido, {usuarioData.NombreApellido}";
+                mensaje = usuarioData.NombreApellido;  // Guardamos el nombre completo del usuario
 
                 // Guardar el token en localStorage
                 await localStorage.SetItemAsync("user-token", "some-auth-token");
@@ -91,3 +100,87 @@ else
         sessionService.OnChange -= StateHasChanged;
     }
 }
+
+<style>
+    /* Contenedor centrado */
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f7f7f7;
+    }
+
+    /* Caja de login estilizada */
+    .login-box {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+        .login-box h4 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+    /* Estilo para los campos de entrada */
+    .form-label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+    /* Botón de ingresar */
+    .btn {
+        font-size: 16px;
+        font-weight: 600;
+        padding: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    /* Estilo para la bienvenida */
+    .welcome-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+        background-color: #f7f7f7;
+    }
+
+    .welcome-message {
+        font-size: 28px;
+        font-weight: bold;
+        color: #4CAF50;
+        margin-bottom: 15px;
+    }
+
+    .welcome-text {
+        font-size: 16px;
+        color: #333;
+        text-align: center;
+        max-width: 600px;
+    }
+</style>

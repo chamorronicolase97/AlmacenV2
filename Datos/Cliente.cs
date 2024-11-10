@@ -44,5 +44,41 @@ namespace Datos
         {
             return base.Clientes.Find(ID);
         }
+
+        public ClasePersistente Ingresar(string User, string Password)
+        {
+
+            Base cn = new Base();
+            string q = @$"Select * from {Tabla} where Usuario = @User
+                        and Contraseña = @Password";
+            SqlCommand cmd = new SqlCommand(q);
+            cmd.Parameters.Add("@User", SqlDbType.VarChar).Value = User;
+            cmd.Parameters.Add("@Password", SqlDbType.VarChar).Value = Encrypt.HashString(Password);
+
+            DataTable dt = new DataTable();
+
+
+            try
+            {
+                dt = cn.Consultar(cmd);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Cliente no Encontrado", ex);
+            }
+            if (dt.Rows.Count > 0)
+            {
+                int ID = (Convert.ToInt32(dt.Rows[0]["ClienteID"]));
+
+                return Consultar(ID);
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
     }
 }

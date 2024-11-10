@@ -1,0 +1,83 @@
+﻿@page "/ComprobanteVenta"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<h3 class="text-center mb-4">Comprobante de Venta</h3>
+
+<div class="card shadow-lg mb-4">
+    <div class="card-body">
+        @if (venta != null)
+        {
+            <h5 class="card-title text-center mb-3"></h5>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Cliente:</strong> @venta.Cliente.Denominacion</p>
+                    <p><strong>Producto:</strong> @venta.Producto.Descripcion</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Cantidad:</strong> @venta.Cantidad</p>
+                    <p><strong>Fecha de la Venta:</strong> @venta.Fecha.ToString("g")</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Precio Unitario:</strong> @(venta.Importe / venta.Cantidad) $</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Total:</strong> @venta.Importe $</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="text-center text-muted">Cargando detalles de la venta...</p>
+        }
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(mensaje))
+{
+    <div class="alert alert-danger mt-3">@mensaje</div>
+}
+
+@code {
+    private Entidades.Venta venta;  // Objeto para almacenar los detalles de la venta
+    private string mensaje;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Obtener el ID de la venta desde el almacenamiento local
+            var ventaID = await localStorage.GetItemAsync<int>("venta-id");
+
+            if (ventaID == 0)
+            {
+                mensaje = "No se encontró el ID de la venta.";
+                return;
+            }
+
+            // Llamar a la API para obtener los detalles de la venta
+            var response = await Http.GetFromJsonAsync<Entidades.Venta>($"https://localhost:7173/api/venta/{ventaID}");
+
+            if (response != null)
+            {
+                venta = response;
+            }
+            else
+            {
+                mensaje = "No se encontraron detalles para esta venta.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al cargar los detalles de la venta: {ex.Message}";
+            Console.Error.WriteLine($"Error: {ex.Message}");  // Imprime detalles en la consola para depuración
+        }
+    }
+}

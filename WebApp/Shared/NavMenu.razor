@@ -13,42 +13,43 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        <!-- Home -->
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+        <!-- Enlace "Admin", oculto si estamos en ComprobanteVenta o ListadoProductos -->
+        @if (MostrarAdminLink() && !EsComprobanteVenta())
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Admin
+                </NavLink>
+            </div>
+        }
 
-        <!-- Si el usuario está logueado, mostrar los enlaces a Productos y Ventas -->
+        <!-- Enlace "Comprar", oculto si estamos en ComprobanteVenta o ListadoProductos -->
+        @if (!sessionService.IsLoggedIn && !EsListadoProductos() && !EsComprobanteVenta())
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/login-cliente" @onclick="NavegarACatalogo">
+                    <span class="oi oi-basket" aria-hidden="true"></span> Comprar
+                </NavLink>
+            </div>
+        }
+
+        <!-- Si el usuario está autenticado, mostrar el enlace "Productos" -->
         @if (sessionService.IsLoggedIn)
         {
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="productos">
+                <NavLink class="nav-link" href="/productos">
                     <span class="oi oi-box" aria-hidden="true"></span> Productos
                 </NavLink>
             </div>
+        }
 
+        <!-- Botón para cerrar sesión, visible cuando el usuario está logueado o en ListadoProductos -->
+        @if (sessionService.IsLoggedIn || EsListadoProductos() || EsComprobanteVenta())
+        {
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="ventas">
-                    <span class="oi oi-cart" aria-hidden="true"></span> Ventas
-                </NavLink>
-            </div>
-
-            <!-- Botón para cerrar sesión -->
-            <div class="nav-item px-3">
-                <button class="nav-link btn btn-link" @onclick="Logout">
+                <button class="nav-link btn btn-link" @onclick="LogoutCliente">
                     <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
                 </button>
-            </div>
-        }
-        else
-        {
-            <!-- Si no está logueado, solo mostrar el enlace de login -->
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="login">
-                    <span class="oi oi-account-login" aria-hidden="true"></span> Login
-                </NavLink>
             </div>
         }
     </nav>
@@ -59,13 +60,12 @@
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    // Suscribirse al evento de cambio de estado de sesión
     protected override void OnInitialized()
     {
-        sessionService.OnChange += StateHasChanged; // Notificar a Blazor cuando cambie el estado
+        sessionService.OnChange += StateHasChanged;
+        Navigation.LocationChanged += (s, e) => StateHasChanged();
     }
 
-    // Cancelar la suscripción cuando el componente se elimine
     public void Dispose()
     {
         sessionService.OnChange -= StateHasChanged;
@@ -76,9 +76,36 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-    private void Logout()
+    private void LogoutCliente()
     {
-        sessionService.IsLoggedIn = false; // Actualizar el estado global de la sesión
+        sessionService.IsLoggedIn = false;
         Navigation.NavigateTo("/"); // Redirige a la página principal después de logout
+    }
+
+    private bool MostrarAdminLink()
+    {
+        // Oculta el enlace "Admin" si estamos en ListadoProductos o ComprobanteVenta
+        return !EsListadoProductos() && !EsComprobanteVenta();
+    }
+
+    private bool EsListadoProductos()
+    {
+        // Verifica si estamos en la página de ListadoProductos
+        return Navigation.Uri.Contains("listadoproducto", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool EsComprobanteVenta()
+    {
+        // Verifica si estamos en la página de ComprobanteVenta
+        return Navigation.Uri.Contains("comprobanteventa", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void NavegarACatalogo()
+    {
+        // Navega solo si no está en la página ListadoProductos
+        if (!EsListadoProductos())
+        {
+            Navigation.NavigateTo("/login-cliente");
+        }
     }
 }
