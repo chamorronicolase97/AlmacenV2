@@ -22,6 +22,7 @@ namespace Escritorio
         private BindingSource bindingSource;
         private bool _modoSeleccion;
         private Entidades.Usuario _usuarioActual;
+        private List<ClasePersistente> _listaOriginal;
 
         const string Permiso = "CategoriasABMS";
 
@@ -67,7 +68,7 @@ namespace Escritorio
         {
             using (var frmCargando = new frmCargando())
             {
-                frmCargando.Show(); // Muestra el formulario de carga
+                frmCargando.Show();
 
                 // Espera a que CargarGrilla complete la carga de datos
                 await CargarGrilla();
@@ -79,12 +80,13 @@ namespace Escritorio
         private async Task CargarGrilla()
         {
             var datos = await ClaseNegocio.ListarTodos();
+            _listaOriginal = datos.ToList();
 
             bindingSource.DataSource = datos;
             dgvDatos.DataSource = bindingSource;
 
-            //dgvDatos.Columns["CategoriaID"].HeaderText = "ID";
-            //dgvDatos.Columns["Descripcion"].HeaderText = "Descripción";
+            dgvDatos.Columns["CategoriaID"].HeaderText = "ID";
+            dgvDatos.Columns["Descripcion"].HeaderText = "Descripción";
 
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
         }
@@ -149,14 +151,22 @@ namespace Escritorio
         private void txtFiltro_TextChanged(object sender, EventArgs e)
         {
             string filtro = txtFiltro.Text.Trim().ToLower();
+
             if (string.IsNullOrEmpty(filtro))
             {
-                bindingSource.RemoveFilter();
+                bindingSource.DataSource = _listaOriginal;
             }
             else
             {
-                bindingSource.Filter = $"Descripcion LIKE '%{filtro}%' OR Convert(Utilidad, 'System.String') LIKE '%{filtro}%'";
+                var listaFiltrada = _listaOriginal.Where(c =>
+                    (c.Descripcion != null && c.Descripcion.ToLower().Contains(filtro)) ||
+                    (c.Utilidad != null && c.Utilidad.ToString().Contains(filtro))
+                ).ToList();
+
+                bindingSource.DataSource = listaFiltrada;
             }
+
+            dgvDatos.Refresh();
         }
 
         private async void btnConsultar_Click(object sender, EventArgs e)

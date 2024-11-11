@@ -24,6 +24,8 @@ namespace Escritorio
         private bool formularioCargado = false;
         private bool _modoSeleccion = false;
         private Entidades.Usuario _usuarioActual;
+        private List<ClasePersistente> _listaOriginal;
+
 
         const string Permiso = "ProductosABMS";
 
@@ -116,15 +118,15 @@ namespace Escritorio
 
         private async Task CargarGrilla()
         {
-            var listado = await ClaseNegocio.ListarTodos();           
-            var productosview = listado.Select(p => new { p.ProductoID, p.Descripcion, p.Costo, PrecioVenta = (p.Costo + (p.Costo * p.Categoria.Utilidad / 100)) ,p.Stock ,p.CodigoDeBarra, p.Proveedor.RazonSocial, p.ProveedorID, Categoria = p.Categoria.Descripcion, p.CategoriaID }).ToList();
+            var listado = await ClaseNegocio.ListarTodos();
+            var productosview = listado.Select(p => new { p.ProductoID, p.Descripcion, p.Costo, PrecioVenta = (p.Costo + (p.Costo * p.Categoria.Utilidad / 100)), p.Stock, p.CodigoDeBarra, p.Proveedor.RazonSocial, p.ProveedorID, Categoria = p.Categoria.Descripcion, p.CategoriaID }).ToList();
             if (FiltroProveedor != null)
             {
                 var listadoFiltrado = productosview.Where(f => f.ProveedorID == FiltroProveedor.ProveedorID).ToList();
                 bindingSource.DataSource = listadoFiltrado;
             }
             else
-            {                
+            {
                 bindingSource.DataSource = productosview;
             }
             dgvDatos.DataSource = bindingSource;
@@ -138,7 +140,10 @@ namespace Escritorio
             dgvDatos.Columns["ProveedorID"].Visible = false;
 
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
         }
+
+
 
         private void btnCrear_Click(object sender, EventArgs e)
         {
@@ -220,6 +225,7 @@ namespace Escritorio
             str += "1=1";
             bindingSource.Filter = str;
         }
+
 
         private async void btnActualizarFiltro_Click(object sender, EventArgs e)
         {
