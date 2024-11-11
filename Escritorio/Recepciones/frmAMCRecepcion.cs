@@ -132,6 +132,8 @@ namespace Escritorio
             Clase.Pedido.PedidoEstadoID = Negocio.PedidoEstado.Recibido.PedidoEstadoID;
             Negocio.Pedido.Modificar(Clase.Pedido);
 
+
+            await Negocio.Recepcion.CrearComprobanteAsync(Clase);
             this.DialogResult = DialogResult.OK;
         }
 

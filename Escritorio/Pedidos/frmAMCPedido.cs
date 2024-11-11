@@ -134,8 +134,10 @@ namespace Escritorio
                     {
                         ClaseNegocio.Modificar(Clase);
                     }
+                    await Negocio.Pedido.CrearComprobanteAsync(Clase);
                 }
             }
+
             this.DialogResult = DialogResult.OK;
             this.Close();
 

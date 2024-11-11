@@ -70,6 +70,16 @@ namespace Negocio
             return false;
             }
         }
+
+        public static async Task CrearComprobanteAsync(ClasePersistente clase)
+        {
+            IEnumerable<Entidades.DetalleRecepcion> listado = await Negocio.DetalleRecepcion.ListarTodos(clase.RecepcionID);
+
+            var PDF = new ComprobantePDFRecepcion(clase, listado.ToList());
+
+            Utilidades.VerPDFTemporal($"Recepcion_{clase.RecepcionID}", PDF.Bytes);
+        }
+
     }
 }
 
