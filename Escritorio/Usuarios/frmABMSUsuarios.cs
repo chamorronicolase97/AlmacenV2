@@ -75,14 +75,13 @@ namespace Escritorio
         {
             var datos = await ClaseNegocio.ListarTodos();
 
-            bindingSource.DataSource = datos;
+            var datosview = datos.Select(p => new { p.UsuarioID, p.NombreApellido, p.CodUsuario, Grupo = p.Grupo.Descripcion }).ToList();
+            bindingSource.DataSource = datosview;
             dgvDatos.DataSource = bindingSource.DataSource;
 
             dgvDatos.Columns["UsuarioID"].HeaderText = "ID";
             dgvDatos.Columns["NombreApellido"].HeaderText = "Nombre y Apellido";
             dgvDatos.Columns["CodUsuario"].HeaderText = "Cod. Usuario";
-            dgvDatos.Columns["Contraseña"].Visible = false;
-            dgvDatos.Columns["UsuarioID"].Visible = false;
 
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
         }

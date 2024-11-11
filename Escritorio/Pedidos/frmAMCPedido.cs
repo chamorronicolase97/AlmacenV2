@@ -125,7 +125,10 @@ namespace Escritorio
                 else
                 {
                     Clase.FechaEntrega = dtpFechaEntrega.Value;
-                    Clase.Proveedor = _proveedor;                    
+                    Clase.Proveedor = _proveedor;
+                    Clase.PedidoEstado = Negocio.PedidoEstado.Confirmado;
+                    Clase.PedidoEstadoID = Negocio.PedidoEstado.Confirmado.PedidoEstadoID;
+
 
                     if (Modificacion)
                     {
@@ -151,12 +154,15 @@ namespace Escritorio
                 frmMostrarMensaje.MostrarMensaje("Pedido", "Debe definir un Proveedor para el Pedido");
                 return false;
             }
-
-            if(Clase.PedidoEstado.PedidoEstadoID == Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
+            
+            if(Clase.PedidoEstado != null)
             {
-                if(MessageBox.Show("¿Desea finalizar Pedido?", "Pedido", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if(Clase.PedidoEstado.PedidoEstadoID == Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
                 {
-                    Clase.PedidoEstado = Negocio.PedidoEstado.Confirmado;                    
+                    if(MessageBox.Show("¿Desea finalizar Pedido?", "Pedido", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        Clase.PedidoEstado = Negocio.PedidoEstado.Confirmado;                    
+                    }
                 }
             }
 

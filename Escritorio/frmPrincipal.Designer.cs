@@ -54,6 +54,7 @@
             panel1 = new Panel();
             lblBienvenido = new Label();
             monthCalendar1 = new MonthCalendar();
+            lblSector = new Label();
             menuStrip1.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -139,35 +140,35 @@
             // categoriasToolStripMenuItem
             // 
             categoriasToolStripMenuItem.Name = "categoriasToolStripMenuItem";
-            categoriasToolStripMenuItem.Size = new Size(180, 22);
+            categoriasToolStripMenuItem.Size = new Size(167, 22);
             categoriasToolStripMenuItem.Text = "Categorias";
             categoriasToolStripMenuItem.Click += categoriasToolStripMenuItem_Click;
             // 
             // proveedoresToolStripMenuItem
             // 
             proveedoresToolStripMenuItem.Name = "proveedoresToolStripMenuItem";
-            proveedoresToolStripMenuItem.Size = new Size(180, 22);
+            proveedoresToolStripMenuItem.Size = new Size(167, 22);
             proveedoresToolStripMenuItem.Text = "Proveedores";
             proveedoresToolStripMenuItem.Click += proveedoresToolStripMenuItem_Click;
             // 
             // productosToolStripMenuItem
             // 
             productosToolStripMenuItem.Name = "productosToolStripMenuItem";
-            productosToolStripMenuItem.Size = new Size(180, 22);
+            productosToolStripMenuItem.Size = new Size(167, 22);
             productosToolStripMenuItem.Text = "Productos";
             productosToolStripMenuItem.Click += productosToolStripMenuItem_Click;
             // 
             // costosProductosToolStripMenuItem
             // 
             costosProductosToolStripMenuItem.Name = "costosProductosToolStripMenuItem";
-            costosProductosToolStripMenuItem.Size = new Size(180, 22);
+            costosProductosToolStripMenuItem.Size = new Size(167, 22);
             costosProductosToolStripMenuItem.Text = "Costos Productos";
             costosProductosToolStripMenuItem.Click += costosProductosToolStripMenuItem_Click;
             // 
             // clientesToolStripMenuItem
             // 
             clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
-            clientesToolStripMenuItem.Size = new Size(180, 22);
+            clientesToolStripMenuItem.Size = new Size(167, 22);
             clientesToolStripMenuItem.Text = "Clientes";
             clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
             // 
@@ -222,6 +223,7 @@
             panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             panel1.BackColor = SystemColors.ActiveCaption;
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(lblSector);
             panel1.Controls.Add(lblBienvenido);
             panel1.Location = new Point(552, 179);
             panel1.Margin = new Padding(3, 2, 3, 2);
@@ -246,6 +248,16 @@
             monthCalendar1.Margin = new Padding(8, 7, 8, 7);
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 3;
+            // 
+            // lblSector
+            // 
+            lblSector.AutoSize = true;
+            lblSector.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            lblSector.Location = new Point(15, 45);
+            lblSector.Name = "lblSector";
+            lblSector.Size = new Size(44, 15);
+            lblSector.TabIndex = 1;
+            lblSector.Text = "Sector";
             // 
             // frmPrincipal
             // 
@@ -293,5 +305,6 @@
         protected MonthCalendar monthCalendar1;
         private ToolStripMenuItem asignarPermisosToolStripMenuItem;
         private ToolStripMenuItem clientesToolStripMenuItem;
+        private Label lblSector;
     }
 }

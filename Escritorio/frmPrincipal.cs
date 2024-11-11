@@ -64,8 +64,9 @@ namespace Escritorio
             if (f.DialogResult == DialogResult.OK)
             {
                 this.Show();
-                Usuario = f.Usuario;
+                Usuario = f.Usuario;                
                 lblBienvenido.Text = lblBienvenido.Text + " " + Usuario.NombreApellido;
+                lblSector.Text = Usuario.Grupo.Descripcion;
             }
             else
             {
@@ -79,6 +80,10 @@ namespace Escritorio
             f.ShowDialog();
             if (f.DialogResult == DialogResult.OK)
             {
+                Usuario = f.Usuario;
+                lblBienvenido.Text = "Bienvenid@";
+                lblBienvenido.Text = lblBienvenido.Text + " " + Usuario.NombreApellido;
+                lblSector.Text = Usuario.Grupo.Descripcion;
                 this.Show();
             }
             else

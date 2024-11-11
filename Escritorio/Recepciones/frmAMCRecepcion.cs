@@ -78,19 +78,21 @@ namespace Escritorio
         {
             if (Clase != null)
             {
-                if (Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
+                if (Clase.Estado != null)
                 {
-                    if (dgvDetalles.Rows.Count != 0)
+                    if (Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
                     {
-                        frmMostrarMensaje.MostrarMensaje("Recepcion", "Ya tiene productos ingresados, eliminelos antes de cancelar la recepción");
-                        return;
-                    }
+                        if (dgvDetalles.Rows.Count != 0)
+                        {
+                            frmMostrarMensaje.MostrarMensaje("Recepcion", "Ya tiene productos ingresados, eliminelos antes de cancelar la recepción");
+                            return;
+                        }
 
-                    if (MessageBox.Show("¿Desea Eliminar la  recepción iniciada?", "Recepcion", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        ClaseNegocio.Eliminar(Clase);
+                        if (MessageBox.Show("¿Desea Eliminar la  recepción iniciada?", "Recepcion", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            ClaseNegocio.Eliminar(Clase);
+                        }
                     }
-
                 }
             }
 
@@ -134,14 +136,16 @@ namespace Escritorio
                 return false;
             }
 
-            if (Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
+            if (Clase.Estado != null)
             {
-                if (MessageBox.Show("¿Desea finalizar la recepción?", "Recepcion", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (Clase.Estado.PedidoEstadoID == Negocio.PedidoEstado.EnEdicion.PedidoEstadoID)
                 {
-                    Clase.Estado = Negocio.PedidoEstado.Confirmado;                    
+                    if (MessageBox.Show("¿Desea finalizar la recepción?", "Recepcion", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        Clase.Estado = Negocio.PedidoEstado.Confirmado;
+                    }
                 }
             }
-
             return true;
         }
 

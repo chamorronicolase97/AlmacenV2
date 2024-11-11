@@ -117,7 +117,7 @@ namespace Escritorio
         private async Task CargarGrilla()
         {
             var listado = await ClaseNegocio.ListarTodos();           
-            var productosview = listado.Select(p => new { p.ProductoID, p.Descripcion, p.Costo, PrecioVenta = (p.Costo + (p.Costo * p.Categoria.Utilidad / 100)) ,p.CodigoDeBarra, p.Proveedor.RazonSocial, p.ProveedorID, Categoria = p.Categoria.Descripcion, p.CategoriaID }).ToList();
+            var productosview = listado.Select(p => new { p.ProductoID, p.Descripcion, p.Costo, PrecioVenta = (p.Costo + (p.Costo * p.Categoria.Utilidad / 100)) ,p.Stock ,p.CodigoDeBarra, p.Proveedor.RazonSocial, p.ProveedorID, Categoria = p.Categoria.Descripcion, p.CategoriaID }).ToList();
             if (FiltroProveedor != null)
             {
                 var listadoFiltrado = productosview.Where(f => f.ProveedorID == FiltroProveedor.ProveedorID).ToList();

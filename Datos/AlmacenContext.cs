@@ -47,18 +47,6 @@ namespace Datos
             modelBuilder.Entity<Entidades.DetalleRecepcion>().HasKey(p => new { p.RecepcionID, p.ProductoID });
 
 
-            //// Configurar relación entre DetallePedido y Pedido
-            //modelBuilder.Entity<Entidades.DetallePedido>()
-            //    .HasOne(dp => dp.Pedido)
-            //    .WithMany(p => p.DetallesPedido)
-            //    .HasForeignKey(dp => dp.PedidoID);
-
-            //// Configurar relación entre DetallePedido y Producto
-            //modelBuilder.Entity<Entidades.DetallePedido>()
-            //    .HasOne(dp => dp.Producto)
-            //    .WithMany(pr => pr.DetallesPedido)
-            //    .HasForeignKey(dp => dp.ProductoID);
-
         }
     }
 }

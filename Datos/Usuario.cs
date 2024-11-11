@@ -36,7 +36,7 @@ namespace Datos
 
         public List<ClasePersistente> ListarUsuarios()
         {
-           return base.Usuarios.ToList();
+           return base.Usuarios.Include(u => u.Grupo).ToList();
         }
 
         public bool EsVacio()

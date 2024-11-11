@@ -47,7 +47,7 @@ namespace Escritorio
             if (Clase != null)
             {
                 txtID.Text = Clase.PermisoID.ToString();
-                txtCodPermiso.Text = Clase.CodPermiso;
+                txtCodPermiso.Text = Clase.CodPermiso.Trim();
                 txtDescripcion.Text = Clase.Descripcion;
 
                 if (_soloLectura)
@@ -75,14 +75,14 @@ namespace Escritorio
                 {
                     Clase = new Permiso()
                     {
-                        CodPermiso = txtCodPermiso.Text,
+                        CodPermiso = txtCodPermiso.Text.Trim(),
                         Descripcion = txtDescripcion.Text,
                     };
                     ClaseNegocio.Agregar(Clase);
                 }
                 else
                 {
-                    Clase.CodPermiso = txtCodPermiso.Text;
+                    Clase.CodPermiso = txtCodPermiso.Text.Trim();
                     Clase.Descripcion = txtDescripcion.Text;
 
                     if (Modificacion)

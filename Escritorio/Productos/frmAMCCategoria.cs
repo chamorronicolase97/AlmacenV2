@@ -20,7 +20,7 @@ namespace Escritorio
         public bool SoloLectura { get { return _soloLectura; } set { _soloLectura = value; } }
         private Entidades.Usuario _usuarioActual;
 
-        const string Permiso = "CategoriasAMC";
+        const string Permiso = "CategoriaAMC";
         public frmAMCCategoria()
         {
             InitializeComponent();
