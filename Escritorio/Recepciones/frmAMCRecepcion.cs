@@ -113,7 +113,14 @@ namespace Escritorio
 
                 foreach (DetalleRecepcion rec in _listadoDetalle)
                 {
-                    rec.Producto.Stock += rec.Cantidad;
+                    if (rec.Producto.Stock == 0)
+                    {
+                        rec.Producto.Stock = rec.Cantidad;
+                    }
+                    else
+                    {
+                        rec.Producto.Stock += rec.Cantidad;                    
+                    }
                     Negocio.Producto.Modificar(rec.Producto);
                 }
             }
