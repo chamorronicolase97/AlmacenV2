@@ -58,7 +58,7 @@
             dgvDatos.Name = "dgvDatos";
             dgvDatos.RowHeadersWidth = 51;
             dgvDatos.RowTemplate.Height = 29;
-            dgvDatos.Size = new Size(950, 380);
+            dgvDatos.Size = new Size(950, 381);
             dgvDatos.TabIndex = 0;
             // 
             // splitContainer1
@@ -121,7 +121,7 @@
             dtpFechaCosto.Name = "dtpFechaCosto";
             dtpFechaCosto.Size = new Size(113, 23);
             dtpFechaCosto.TabIndex = 0;
-            dtpFechaCosto.Value = new DateTime(2024, 11, 6, 0, 0, 0, 0);
+            dtpFechaCosto.Value = new DateTime(2024, 11, 11, 0, 0, 0, 0);
             // 
             // txtFiltro
             // 

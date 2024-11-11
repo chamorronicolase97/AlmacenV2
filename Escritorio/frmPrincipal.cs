@@ -64,7 +64,7 @@ namespace Escritorio
             if (f.DialogResult == DialogResult.OK)
             {
                 this.Show();
-                Usuario = f.Usuario;                
+                Usuario = f.Usuario;
                 lblBienvenido.Text = lblBienvenido.Text + " " + Usuario.NombreApellido;
                 lblSector.Text = Usuario.Grupo.Descripcion;
             }
@@ -119,5 +119,6 @@ namespace Escritorio
             frmABMSClientes f = new frmABMSClientes(Usuario);
             f.Show();
         }
+
     }
 }

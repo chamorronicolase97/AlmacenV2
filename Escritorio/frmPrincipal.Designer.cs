@@ -52,9 +52,9 @@
             asignarPermisosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1 = new MenuStrip();
             panel1 = new Panel();
+            lblSector = new Label();
             lblBienvenido = new Label();
             monthCalendar1 = new MonthCalendar();
-            lblSector = new Label();
             menuStrip1.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -231,6 +231,16 @@
             panel1.Size = new Size(248, 100);
             panel1.TabIndex = 4;
             // 
+            // lblSector
+            // 
+            lblSector.AutoSize = true;
+            lblSector.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            lblSector.Location = new Point(15, 45);
+            lblSector.Name = "lblSector";
+            lblSector.Size = new Size(44, 15);
+            lblSector.TabIndex = 1;
+            lblSector.Text = "Sector";
+            // 
             // lblBienvenido
             // 
             lblBienvenido.AutoSize = true;
@@ -248,16 +258,6 @@
             monthCalendar1.Margin = new Padding(8, 7, 8, 7);
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 3;
-            // 
-            // lblSector
-            // 
-            lblSector.AutoSize = true;
-            lblSector.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblSector.Location = new Point(15, 45);
-            lblSector.Name = "lblSector";
-            lblSector.Size = new Size(44, 15);
-            lblSector.TabIndex = 1;
-            lblSector.Text = "Sector";
             // 
             // frmPrincipal
             // 
