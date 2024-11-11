@@ -12,7 +12,7 @@ namespace Sistema
     public class Base
     {
 
-        string connectionString = "Data Source=HWNOTE163490\\SQLEXPRESS;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False";
+        string connectionString = "Data Source=HWNOTE163490\\SQLEXPRESS01;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False";
         string connectionString2 = "Data Source=DESKTOP-KHKJ2OC;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False";
 
         public SqlConnection Conectarbd = new SqlConnection();

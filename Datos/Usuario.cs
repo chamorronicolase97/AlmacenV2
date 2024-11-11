@@ -23,6 +23,7 @@ namespace Datos
 
         public void Modificar(ClasePersistente clase)
         {
+            clase.Contraseña = Encrypt.HashString(clase.Contraseña);
             base.Usuarios.Update(clase);
             base.SaveChanges();            
         }

@@ -14,12 +14,14 @@ namespace Datos
 
         public void Insertar(ClasePersistente clase)
         {
+            clase.Contraseña = Encrypt.HashString(clase.Contraseña);
             base.Clientes.Add(clase);
             base.SaveChanges();
         }
 
         public void Modificar(ClasePersistente clase)
         {
+            clase.Contraseña = Encrypt.HashString(clase.Contraseña);
             base.Clientes.Update(clase);
             base.SaveChanges();
         }

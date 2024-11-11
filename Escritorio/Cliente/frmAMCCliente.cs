@@ -97,15 +97,15 @@ namespace Escritorio
                 }
                 else
                 {
-                        Clase.Cuit = txtCUIT.Text;
-                        Clase.Denominacion = txtDenominacion.Text;
-                        Clase.Domicilio = txtDireccion.Text;
-                        Clase.Email = txtMail.Text;
-                        Clase.Telefono = txtTelefono.Text;
-                        Clase.Empleado = chkEmpleado.Checked;
-                        Clase.Preferencial = chkPreferencial.Checked;
-                        Clase.Usuario = txtUsuario.Text;
-                        Clase.Contraseña = txtContraseña.Text;
+                    Clase.Cuit = txtCUIT.Text;
+                    Clase.Denominacion = txtDenominacion.Text;
+                    Clase.Domicilio = txtDireccion.Text;
+                    Clase.Email = txtMail.Text;
+                    Clase.Telefono = txtTelefono.Text;
+                    Clase.Empleado = chkEmpleado.Checked;
+                    Clase.Preferencial = chkPreferencial.Checked;
+                    Clase.Usuario = txtUsuario.Text;
+                    Clase.Contraseña = txtContraseña.Text;
 
                     if (Modificacion)
                     {
@@ -114,7 +114,7 @@ namespace Escritorio
                 }
             }
             this.DialogResult = DialogResult.OK;
-            this.Close();            
+            this.Close();
         }
 
         private bool Validar()

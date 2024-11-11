@@ -52,6 +52,7 @@ namespace Escritorio
                 txtUsuario.Text = Clase.CodUsuario;
                 txtContraseña.Text = Clase.Contraseña;
                 txtGrupo.Text = Clase.Grupo.Descripcion.ToString();
+                _grupo = Clase.Grupo;
 
                 if (SoloLectura)
                 {

@@ -34,7 +34,7 @@ namespace Datos
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=HWNOTE163490\SQLEXPRESS;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
+            optionsBuilder.UseSqlServer(@"Data Source=HWNOTE163490\SQLEXPRESS01;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
             //optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-KHKJ2OC;Initial Catalog=Almacen;Integrated Security=True;Connect Timeout=30;Encrypt=False");
             optionsBuilder.EnableSensitiveDataLogging();
         }
