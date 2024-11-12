@@ -73,7 +73,7 @@ else
 
 @code {
     private List<Entidades.Producto> productos;
-    private Dictionary<int, decimal?> costosOriginales = new Dictionary<int, decimal?>(); // Diccionario para almacenar los costos originales (nullable)
+    private Dictionary<int, decimal?> costosOriginales = new Dictionary<int, decimal?>(); 
 
     protected override async Task OnInitializedAsync()
     {
@@ -147,13 +147,13 @@ else
         }
     }
 
-    // Cancelar la edición y restaurar el valor original del costo desde el diccionario
+   
     private void CancelarEdicion(Entidades.Producto producto)
     {
         if (costosOriginales.ContainsKey(producto.ProductoID))
         {
-            producto.Costo = costosOriginales[producto.ProductoID] ?? 0; // Restaurar el valor original (o 0 si es null)
+            producto.Costo = costosOriginales[producto.ProductoID] ?? 0; 
         }
-        producto.IsEditingCosto = false; // Deshabilitar la edición
+        producto.IsEditingCosto = false; 
     }
 }

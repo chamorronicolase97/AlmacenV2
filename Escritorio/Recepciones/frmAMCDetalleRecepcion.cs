@@ -104,6 +104,7 @@ namespace Escritorio
             frmABMSProductos f = new frmABMSProductos { };
             f.ObjetoSeleccionado = _producto;
             f.FiltroProveedor = Proveedor;
+            f.ModoSeleccion = true;
             if (DialogResult.OK == f.ShowDialog(this))
             {
                 _producto = f.ObjetoSeleccionado;

@@ -20,6 +20,8 @@ namespace Escritorio
         private BindingSource bindingSource;
         private bool _modoSeleccion;
         private Entidades.Usuario _usuarioActual;
+        private List<ClasePersistente> _listaOriginal;
+
 
         const string Permiso = "ProveedoresABMS";
 
@@ -79,6 +81,7 @@ namespace Escritorio
 
             bindingSource.DataSource = datos;
             dgvDatos.DataSource = bindingSource;
+            _listaOriginal = datos.ToList();
 
             dgvDatos.Columns["ProveedorID"].HeaderText = "ID";
             dgvDatos.Columns["RazonSocial"].HeaderText = "Razón Social";
@@ -147,20 +150,22 @@ namespace Escritorio
 
         private void AplicarFiltroRapido()
         {
-            string str = "";
             string filtro = txtFiltro.Text.Trim().ToLower();
+
             if (string.IsNullOrEmpty(filtro))
             {
-                bindingSource.RemoveFilter();
+                bindingSource.DataSource = _listaOriginal;
             }
             else
             {
-                str += $@"RazonSocial LIKE '%{filtro}%' OR Direccion LIKE '%{filtro}%'
-                                        OR Mail LIKE '%{filtro}%' and ";
+                var listaFiltrada = _listaOriginal.Where(c =>
+                    (c.RazonSocial != null && c.RazonSocial.ToLower().Contains(filtro))
+                ).ToList();
+
+                bindingSource.DataSource = listaFiltrada;
             }
 
-            str += "1=1";
-            bindingSource.Filter = str;
+            dgvDatos.Refresh();
         }
 
         private void txtFiltro_TextChanged(object sender, EventArgs e)

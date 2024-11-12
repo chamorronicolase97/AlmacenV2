@@ -29,7 +29,8 @@ namespace Escritorio
 
         const string Permiso = "ProductosABMS";
 
-        public Entidades.Proveedor FiltroProveedor { get { return _proveedor; } set { _proveedor = value; } }
+        public Entidades.Proveedor? FiltroProveedor { get { return _proveedor; } set { _proveedor = value; } }
+        private Entidades.Categoria? FiltroCategoria;
 
         public frmABMSProductos()
         {
@@ -86,16 +87,16 @@ namespace Escritorio
             cmbProveedor.ValueMember = "ProveedorID";
             cmbProveedor.SelectedIndex = 0;
 
-            if (FiltroProveedor != null)
-            {
-                cmbProveedor.Enabled = false;
-            }
 
             if (_modoSeleccion)
             {
                 btnCrear.Enabled = false;
                 btnModificar.Enabled = false;
-                btnBorrar.Enabled = false;
+                btnBorrar.Enabled = false;                
+                cmbProveedor.Enabled = false;
+
+                cmbProveedor.SelectedItem = FiltroProveedor;
+
             }
 
             CargarGrillaConCargando();
@@ -119,17 +120,48 @@ namespace Escritorio
         private async Task CargarGrilla()
         {
             var listado = await ClaseNegocio.ListarTodos();
-            var productosview = listado.Select(p => new { p.ProductoID, p.Descripcion, p.Costo, PrecioVenta = (p.Costo + (p.Costo * p.Categoria.Utilidad / 100)), p.Stock, p.CodigoDeBarra, p.Proveedor.RazonSocial, p.ProveedorID, Categoria = p.Categoria.Descripcion, p.CategoriaID }).ToList();
-            if (FiltroProveedor != null)
+            var productosview = listado.Select(p => new
             {
-                var listadoFiltrado = productosview.Where(f => f.ProveedorID == FiltroProveedor.ProveedorID).ToList();
+                p.ProductoID,
+                p.Descripcion,
+                p.Costo,
+                PrecioVenta = (p.Costo + (p.Costo * p.Categoria.Utilidad / 100)),
+                p.Stock,
+                p.CodigoDeBarra,
+                p.Proveedor.RazonSocial,
+                p.ProveedorID,
+                Categoria = p.Categoria.Descripcion,
+                p.CategoriaID
+            }).ToList();
+
+            if (FiltroProveedor != null && FiltroCategoria != null)
+            {
+                var listadoFiltrado = productosview
+                    .Where(f => f.ProveedorID == FiltroProveedor.ProveedorID && f.CategoriaID == FiltroCategoria.CategoriaID)
+                    .ToList();
+                bindingSource.DataSource = listadoFiltrado;
+            }
+            else if (FiltroProveedor != null)
+            {
+                var listadoFiltrado = productosview
+                    .Where(f => f.ProveedorID == FiltroProveedor.ProveedorID)
+                    .ToList();
+                bindingSource.DataSource = listadoFiltrado;
+            }
+            else if (FiltroCategoria != null)
+            {
+                var listadoFiltrado = productosview
+                    .Where(f => f.CategoriaID == FiltroCategoria.CategoriaID)
+                    .ToList();
                 bindingSource.DataSource = listadoFiltrado;
             }
             else
             {
                 bindingSource.DataSource = productosview;
             }
+
             dgvDatos.DataSource = bindingSource;
+
 
             dgvDatos.Columns["ProductoID"].HeaderText = "ID";
             dgvDatos.Columns["Descripcion"].HeaderText = "Descripción";
@@ -214,14 +246,7 @@ namespace Escritorio
                 str += $@"Descripcion LIKE '%{filtro}%' OR Convert(Costo, 'System.String') LIKE '%{filtro}%'
                                         OR CodigoDeBarra LIKE '%{filtro}%' and ";
             }
-            if (cmbCategoria.SelectedIndex > 0)
-            {
-                str += "CategoriaID =" + cmbCategoria.SelectedValue.ToString() + " and ";
-            }
-            if (cmbProveedor.SelectedIndex > 0)
-            {
-                str += "ProveedorID =" + cmbProveedor.SelectedValue.ToString() + " and ";
-            }
+            
             str += "1=1";
             bindingSource.Filter = str;
         }
@@ -244,14 +269,34 @@ namespace Escritorio
         {
             if (dgvDatos == null) return;
             if (formularioCargado == false) return;
-            AplicarFiltroRapido();
+            if (cmbCategoria.SelectedIndex == 0)
+            {
+                FiltroCategoria = null;
+                CargarGrillaConCargando();
+            }
+            else
+            {
+                FiltroCategoria = (Categoria)cmbCategoria.SelectedItem;
+                CargarGrillaConCargando();
+
+            }
         }
 
         private void cmbProveedor_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (dgvDatos == null) return;
             if (formularioCargado == false) return;
-            AplicarFiltroRapido();
+            if (cmbProveedor.SelectedIndex == 0)
+            {
+                FiltroProveedor = null;
+                CargarGrillaConCargando();
+            }
+            else
+            {
+                FiltroProveedor = (Proveedor)cmbProveedor.SelectedItem;
+                CargarGrillaConCargando();
+
+            }
         }
 
         private async void btnConsultar_Click(object sender, EventArgs e)
