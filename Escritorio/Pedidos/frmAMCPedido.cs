@@ -134,7 +134,7 @@ namespace Escritorio
                     {
                         ClaseNegocio.Modificar(Clase);
                     }
-                  // await Negocio.Pedido.CrearComprobanteAsync(Clase);
+                   await Negocio.Pedido.CrearComprobanteAsync(Clase);
                 }
             }
 

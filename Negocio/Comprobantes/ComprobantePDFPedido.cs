@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Entidades;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace Negocio
 {
@@ -17,7 +18,8 @@ namespace Negocio
             _detalles = detalles;
 
             string content = GetHTML();
-            Bytes = ConvertHtmlToPdf(content);
+
+            Bytes = ConvertirHtmlAPdf(content); 
         }
 
         private string GetHTML()
@@ -42,8 +44,8 @@ namespace Negocio
                         <td>{detalle.Producto.Descripcion}</td>
                         <td>{detalle.Producto.CodigoDeBarra}</td>
                         <td>{detalle.Cantidad}</td>
-                        <td>{detalle.CostoUnitario}</td>
-                        <td>{detalle.Cantidad * detalle.CostoUnitario:C}</td>
+                        <td>$ {detalle.CostoUnitario:N0}</td>
+                        <td>$ {detalle.Cantidad * detalle.CostoUnitario:N0}</td>
                     </tr>");
             }
 
@@ -100,7 +102,7 @@ namespace Negocio
 
     <div class=""footer"" style=""margin-top: 20px;"">
         <p><strong>Total de Productos Solicitados:</strong> {totalCantidad}</p>
-        <p><strong>Importe Total:</strong> {totalImporte}</p>
+        <p><strong>Importe Total:</strong>$ {totalImporte:N0}</p>
     </div>
 </div>
 

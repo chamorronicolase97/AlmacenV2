@@ -79,7 +79,7 @@ namespace Negocio
 
             var PDF = new ComprobantePDFPedido(clase, listado.ToList());
 
-            Utilidades.VerPDFTemporal($"Recepcion_{clase.PedidoID}", PDF.Bytes);
+            Utilidades.VerPDFTemporal($"Pedido_{clase.PedidoID}", PDF.Bytes);
         }
     }
 }

@@ -133,7 +133,7 @@ namespace Escritorio
             Negocio.Pedido.Modificar(Clase.Pedido);
 
 
-            //await Negocio.Recepcion.CrearComprobanteAsync(Clase);
+            await Negocio.Recepcion.CrearComprobanteAsync(Clase);
             this.DialogResult = DialogResult.OK;
         }
 

@@ -1,46 +1,23 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.IO;
-using DinkToPdf;
-using DinkToPdf.Contracts;
+using PdfSharp.Pdf;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
 
-namespace Negocio
+public class PDFGenerator
 {
 
-    public class PDFGenerator
+    public byte[] ConvertirHtmlAPdf(string htmlContent)
     {
-        private readonly IConverter _converter;
-
-        public PDFGenerator()
+        // Crear el documento PDF
+        using (PdfSharpCore.Pdf.PdfDocument pdf = PdfGenerator.GeneratePdf(htmlContent, PdfSharpCore.PageSize.A4))
         {
-            // Configura el conversor con el contenedor de DinkToPdf
-            _converter = new SynchronizedConverter(new PdfTools());
-        }
-
-        public byte[] ConvertHtmlToPdf(string htmlContent)
-        {
-            // Configura las opciones para la conversión de HTML a PDF
-            var doc = new HtmlToPdfDocument()
+            // Convertir el documento PDF a byte[] usando un MemoryStream
+            using (MemoryStream stream = new MemoryStream())
             {
-                GlobalSettings = new GlobalSettings
-                {
-                    PaperSize = PaperKind.A4,
-                    Orientation = Orientation.Portrait,
-                    Out = null  // Configura Out en null para devolver el PDF como byte array
-                },
-                Objects =
-            {
-                new ObjectSettings
-                {
-                    HtmlContent = htmlContent,
-                    WebSettings = { DefaultEncoding = "utf-8" }
-                }
+                pdf.Save(stream, false); // Guarda el PDF en el MemoryStream
+                return stream.ToArray(); // Retorna el contenido del MemoryStream como byte[]
             }
-            };
-
-            // Convierte el HTML a PDF y devuelve el resultado como byte array
-            return _converter.Convert(doc);
         }
     }
+
 }
-
-
